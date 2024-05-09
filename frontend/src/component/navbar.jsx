@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import Logo from '../img/logo.png'
 
 class Navbar extends Component {
     state = {  } 
     render() { 
-        return <nav className="navbar">
-            <a href="" className="site-title">Muscel Djinn</a>
-            <ul>
-                <li><a href="http://localhost:3000/">Start</a></li>
-            </ul>
-        </nav>
+        return <nav className="navbar fixed-bottom navbar-dark bg-dark">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            <img src={Logo} width="" height="40" alt=""/>
+          </a>
+        </div>
+      </nav>
     }
 }
  

@@ -5,108 +5,46 @@
 body {
     margin: 0;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    /*background-image: url("background_2.jpg");*/
-    display: cover;
-    background-position: center;
-    background-attachment: fixed; 
   }
 
-nav {
-    background-color: #333;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    padding: 0 1rem;
-    font-size: 2rem;
+.header {
+  background-color: #00000000; /* Hintergrundfarbe des Headers */
+  padding: 200px 0; /* Platzierung des Logos im Header */
 }
 
-nav ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 1rem;
+.headerlogo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+  z-index: 1;
 }
 
-nav a {
-    color: inherit;
-    text-decoration: none;
+.logo {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Zentriert das Logo horizontal */
 }
 
-  .container {
-    position: relative;
-    text-align: center;
-    padding: 20px;
-  }
+.background-container {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Zentriert horizontal */
+  align-items: center; /* Zentriert vertikal */
+  height: 100vh; /* 100% der Bildschirmhöhe */
+  background-image: url('./img/background.jpg'); /* Pfad zum Hintergrundbild */
+  background-size: cover; /* Skaliert das Bild, um den gesamten Container zu bedecken */
+  background-position: center; /* Zentriert das Bild horizontal */
+  background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+}
 
-  .menu-link {
-    color: white;
-    text-decoration: none;
-    margin: 8px;
-    display: block;
-  }
-
-  .logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 20px;
-    height: 50px;
-  }
-
-  .headline {
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
-  }
-
-  .white {
-    color: rgb(150, 0, 0);
-  }
-
-  .button {
-    background-color: rgb(150, 0, 0);
-    padding: 8px 12px;
-    border-radius:20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-  }
-
-
-  .mobile-navbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 12px 0;
-    text-align: center;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .mobile-navbar a {
-    color: white;
-    text-decoration: none;
-  }
-
-  @media screen and (max-width: 480px) {
-    .container {
-      position: static;
-    }
-
-    .menu-link {
-      margin: 8px auto;
-    }
-
-    .logo {
-      position: static;
-      transform: none;
-      margin-bottom: 20px;
-    }
-
-    .headline {
-      font-size: 16px;
-    }
-  }
+.background-container::before {
+  content: ''; /* Pseudo-Element-Inhalt */
+  position: absolute; /* Positionierung des Pseudo-Elements */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Semi-transparentes Overlay (schwarz mit 50% Transparenz) */
+}

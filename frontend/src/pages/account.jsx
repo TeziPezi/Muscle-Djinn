@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class Haupt extends Component {
+class Account extends Component {
     state = {} 
     render() { 
         return (
             <div>
                 <div className="container">
-                    <img className="logo" src="logo.png" alt="Logo" />
+                    <img className="logo" src="/img/logo.png" alt="Logo" />
                     <h1 className="headline">
                         <br /><br /> <br /> Dein <span className="white">täglicher</span> Trainingspartner
                     </h1>
@@ -22,4 +22,4 @@ class Haupt extends Component {
     }
 }
  
-export default Haupt;
+export default Account;
