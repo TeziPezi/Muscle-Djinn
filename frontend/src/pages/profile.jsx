@@ -3,7 +3,7 @@ import Header from '../component/header';
 import Navbar from '../component/navbar';
 import '../styles.css';
 
-class Training extends Component {
+class Profile extends Component {
     state = {};
     render() {
         return (
@@ -11,7 +11,7 @@ class Training extends Component {
                 <Header />
                 <div className="headPosition">
                     <div className="container">
-                        Das ist die Trainingpage.
+                        Das ist die Profilepage.
                     </div>
                 </div>
                 <Navbar />
@@ -20,4 +20,4 @@ class Training extends Component {
     }
 }
 
-export default Training;
+export default Profile;

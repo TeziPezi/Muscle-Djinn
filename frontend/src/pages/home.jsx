@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../component/header';
 import Navbar from '../component/navbar';
+import Navbar2 from '../component/navbar2';
 import '../styles.css';
 
-class Training extends Component {
+class Home extends Component {
     state = {};
     render() {
         return (
@@ -11,13 +12,14 @@ class Training extends Component {
                 <Header />
                 <div className="headPosition">
                     <div className="container">
-                        Das ist die Trainingpage.
+                        Das ist die Homepage.
                     </div>
                 </div>
+
                 <Navbar />
             </React.Fragment>
         );
     }
 }
 
-export default Training;
+export default Home;

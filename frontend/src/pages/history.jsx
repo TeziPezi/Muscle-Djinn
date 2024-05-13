@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
+import Header from '../component/header';
+import Navbar from '../component/navbar';
+import '../styles.css';
 
 class History extends Component {
-    state = {} 
-    render() { 
+    state = {};
+    render() {
         return (
-            <div>
-                <div className="container">
-                    <img className="logo" src="/img/logo.png" alt="Logo" />
-                    <h1 className="headline">
-                        <br /><br /> <br /> Dein <span className="white">täglicher</span> Trainingspartner
-                    </h1>
+            <React.Fragment>
+                <Header />
+                <div className="headPosition">
+                    <div className="container">
+                        Das ist die Historypage.
+                    </div>
                 </div>
-                <div className="mobile-navbar"> {/* Navigationsleiste nur für Smartphones */}
-                    <a className="menu-link button" href="">Training</a>
-                    <a className="menu-link button" href="">Calender</a>
-                    <a className="menu-link button" href="">History</a>
-                    <a className="menu-link button" href="">Account</a>
-                </div>
-            </div>
+                <Navbar />
+            </React.Fragment>
         );
     }
 }
- 
+
 export default History;

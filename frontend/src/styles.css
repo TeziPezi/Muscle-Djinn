@@ -1,50 +1,87 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: 'Helvetica', 'Arial', sans-serif;
-  }
-
-.header {
-  background-color: #00000000; /* Hintergrundfarbe des Headers */
-  padding: 200px 0; /* Platzierung des Logos im Header */
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  background-color: #272727 !important;
 }
 
-.headerlogo {
+/*Navbar elements start*/
+.active {
+  background-color:rgba(200, 0, 0, 0.6)
+}
+
+.navbar {
+  padding: 0;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+nav ul li {
+  list-style: none;
+}
+
+nav ul li a {
+  display: block;
+
+  color: white;
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  border-radius: 0.5rem;
+}
+
+nav ul li a:not(.active):hover {
+  background-color:rgb(200, 0, 0)
+}
+/*Navbar elements stop*/
+
+/* Head elements start */
+
+.headPosition {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 20px;
-  z-index: 1;
+  left: 10%;
+  right: 10%;
+  top: 10px;
+  padding: 50;
 }
 
-.logo {
-  max-width: 100%;
+.headLogo {
+  max-width: 40%;
   height: auto;
   display: block;
   margin: 0 auto; /* Zentriert das Logo horizontal */
 }
+
+.headLine {
+  position: relative;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
+  top: 20px;
+}
+/* Head elements stop*/
 
 .background-container {
   position: relative;
   display: flex;
   justify-content: center; /* Zentriert horizontal */
   align-items: center; /* Zentriert vertikal */
-  height: 100vh; /* 100% der Bildschirmhöhe */
-  background-image: url('./img/background.jpg'); /* Pfad zum Hintergrundbild */
-  background-size: cover; /* Skaliert das Bild, um den gesamten Container zu bedecken */
-  background-position: center; /* Zentriert das Bild horizontal */
-  background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+  height: 150vh; /* 150% der Bildschirmhöhe */
 }
 
-.background-container::before {
-  content: ''; /* Pseudo-Element-Inhalt */
-  position: absolute; /* Positionierung des Pseudo-Elements */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2); /* Semi-transparentes Overlay (schwarz mit 50% Transparenz) */
+.container {
+  position: relative;
+  text-align: center;
+  top: 150px;
+  position: relative;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  padding: 10px;
 }
