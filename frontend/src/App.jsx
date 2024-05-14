@@ -1,27 +1,30 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './component/header';
+import NavbarBottom from './component/NavbarBottom';
+import './styles.css'
+
 import Home from './pages/home';
 import Training from './pages/training';
-import Calender from './pages/calender';
+import Calendar from './pages/calendar';
 import History from './pages/history';
-import Profile from './pages/profile';
+import Settings from './pages/settings';
 import NoPage from './pages/NoPage';
-import './styles.css'
 
 
 function App() {
     return (
         <Router>
             <React.Fragment>
-                <div className="background-container">
-                </div>
+                <Header/>
+                <NavbarBottom/>
                 <Routes>
                     <Route index element={<Home/>} />
                     <Route path="/" element={<Home/>} />
                     <Route path ="/training" element={<Training/>} />
-                    <Route path="/calender" element={<Calender/>} />
+                    <Route path="/calendar" element={<Calendar/>} />
                     <Route path="/history" element={<History/>} />
-                    <Route path="/profile" element={<Profile/>} />
+                    <Route path="/settings" element={<Settings/>} />
                     <Route path="*" element={<NoPage/>} />
                 </Routes>
             </React.Fragment>

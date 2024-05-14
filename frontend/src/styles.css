@@ -12,37 +12,16 @@ body {
   background-color:rgba(200, 0, 0, 0.6)
 }
 
-.navbar {
-  padding: 0;
-}
-
-nav ul {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-}
-
-nav ul li {
-  list-style: none;
-}
-
 nav ul li a {
   display: block;
-
   color: white;
-  padding: 0.5rem;
-  margin: 0 0.5rem;
-  border-radius: 0.5rem;
-}
-
-nav ul li a:not(.active):hover {
-  background-color:rgb(200, 0, 0)
+  padding: 0.8rem;
+  margin: 0 0.3rem;
+  border-radius: 1rem;
 }
 /*Navbar elements stop*/
 
 /* Head elements start */
-
 .headPosition {
   position: absolute;
   left: 10%;
@@ -67,14 +46,6 @@ nav ul li a:not(.active):hover {
   top: 20px;
 }
 /* Head elements stop*/
-
-.background-container {
-  position: relative;
-  display: flex;
-  justify-content: center; /* Zentriert horizontal */
-  align-items: center; /* Zentriert vertikal */
-  height: 150vh; /* 150% der Bildschirmhöhe */
-}
 
 .container {
   position: relative;

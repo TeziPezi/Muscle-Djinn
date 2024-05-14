@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import Header from '../component/header';
-import Navbar from '../component/navbar';
 import '../styles.css';
+
 
 class History extends Component {
     state = {};
     render() {
         return (
             <React.Fragment>
-                <Header />
                 <div className="headPosition">
                     <div className="container">
-                        Das ist die Historypage.
+                        The Historypage.<br/><br/>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab porro ratione, neque repudiandae inventore esse. Esse deserunt corporis dicta consectetur et saepe hic perferendis atque. Alias aut repellendus minima! Asperiores cum veritatis dicta quisquam dignissimos ullam inventore adipisci, ea sapiente corrupti in tempore hic sed. Quas atque rem itaque nulla.
                     </div>
                 </div>
-                <Navbar />
             </React.Fragment>
         );
     }
