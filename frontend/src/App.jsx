@@ -10,6 +10,7 @@ import Calendar from './pages/calendar';
 import History from './pages/history';
 import Settings from './pages/settings';
 import NoPage from './pages/NoPage';
+import Login from './pages/loginForm';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/calendar" element={<Calendar/>} />
                     <Route path="/history" element={<History/>} />
                     <Route path="/settings" element={<Settings/>} />
+                    <Route path="/loginForm" element={<Login/>} />
                     <Route path="*" element={<NoPage/>} />
                 </Routes>
             </React.Fragment>
