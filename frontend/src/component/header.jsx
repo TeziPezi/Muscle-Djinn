@@ -7,7 +7,7 @@ class Header extends Component {
         return <header>
             <div className="headPosition">
                 <img src={Logo} alt="Logo" className="headLogo"/>
-                <div className="headLine">Dein <span style={{ color: "rgb(200, 0, 0)"}}>täglicher</span> Begleiter</div>
+                <div className="headLine">Your <span style={{ color: "rgb(200, 0, 0)"}}>daily</span> companion.</div>
             </div>
         </header>
     }
