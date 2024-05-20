@@ -10,7 +10,7 @@ class Login extends Component {
             <React.Fragment>
                 <div className='container' style={{display: 'flex', justifyContent: 'space-around'}}>
                     <div className='wrapper'>
-                        <form action="">
+                        <form action="" method="post">
                             <h1><span style={{ color: "white" }}>Login</span></h1>
                             <div className='input-box'>
                                 <input type="text" placeholder="Username" required />
