@@ -1,23 +1,45 @@
 import React, { Component } from 'react';
 import '../styles.css';
 import { FaUser, FaLock } from "react-icons/fa";
+import axios from 'axios'
 
 
 class Login extends Component {
-    state = {}
+    state = {
+        username: '',
+        password: '',
+        message: ''
+
+    }
+
+    handleInputChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const { username, password } = this.state;
+        axios.post('http://localhost:8081/loginForm', {username, password})
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+
+    };
+
     render() {
         return (
             <React.Fragment>
                 <div className='container' style={{display: 'flex', justifyContent: 'space-around'}}>
                     <div className='wrapper'>
-                        <form action="" method="post">
+                        <form onSubmit={this.handleSubmit}>
                             <h1><span style={{ color: "white" }}>Login</span></h1>
                             <div className='input-box'>
-                                <input type="text" placeholder="Username" required />
+                                <input type="text" name="username" placeholder="Username"
+                                value={this.state.username} onChange={this.handleInputChange} required />
                                 <FaUser className='icon' />
                             </div>
                             <div className='input-box'>
-                                <input type="passwort" placeholder="Passwort" required />
+                                <input type="password" name='password' placeholder="Password" 
+                                value={this.state.password} onChange={this.handleInputChange} required />
                                 <FaLock className='icon2' />
                             </div>
                             <div className="remember-forgot">
@@ -31,6 +53,7 @@ class Login extends Component {
                                 <p>Don't have an account? <a href="/">Register</a></p>
 
                             </div>
+                            {this.state.message && <p>{this.state.message}</p>}
                         </form>
                     </div>
                 </div>
