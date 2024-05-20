@@ -7,17 +7,19 @@ class Home extends Component {
         this.props.navigate('/loginForm');
     };
 
+    handleRegisterClick = () => {
+        this.props.navigate();
+    }
+
     render() {
         return (
             <React.Fragment>
                 <div className="headPosition">
                     <div className="container">
-                        The Homepage.<br/><br/>
-                        <button type="button" className="Button" onClick={this.handleLoginClick}>
-                            Login
-                        </button>
                         <br/><br/>
-                        <button type="button" className="Button">Register</button>
+                        <button type="button" className="Button" onClick={this.handleLoginClick}>Login</button>
+                        <br/><br/>
+                        <button type="button" className="Button" onClick={this.handleRegisterClick}>Register</button>
                     </div>
                 </div>
             </React.Fragment>
