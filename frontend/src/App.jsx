@@ -6,7 +6,7 @@ import './styles.css'
 
 import Home from './pages/home';
 import Training from './pages/training';
-import Calendar from './pages/calendar';
+import MonthlyCalendar from './pages/monthlyCalendar';
 import History from './pages/history';
 import Settings from './pages/settings';
 import NoPage from './pages/NoPage';
@@ -23,7 +23,7 @@ function App() {
                     <Route index element={<Home/>} />
                     <Route path="/" element={<Home/>} />
                     <Route path ="/training" element={<Training/>} />
-                    <Route path="/calendar" element={<Calendar/>} />
+                    <Route path="/calendar" element={<MonthlyCalendar/>} />
                     <Route path="/history" element={<History/>} />
                     <Route path="/settings" element={<Settings/>} />
                     <Route path="/loginForm" element={<Login/>} />
