@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import '../styles.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from 'axios'
+import { Link, useNavigate} from 'react-router-dom'
 
 
 class Login extends Component {
     state = {
         username: '',
         password: '',
-        message: ''
+        message: '',
 
     }
 
@@ -20,7 +21,24 @@ class Login extends Component {
         e.preventDefault();
         const { username, password } = this.state;
         axios.post('http://localhost:8081/loginForm', {username, password})
-        .then(res => console.log(res))
+        //.then(res => console.log(res.message))
+
+        .then((res) => {
+            
+            if(res.data.loginValue){
+                this.props.navigate('/training')
+                
+            }
+            else(
+                
+                this.setState({ message: res.data.message }, () =>
+                {
+ 
+                })
+            )
+
+        })
+
         .catch(err => console.log(err));
 
     };
@@ -62,4 +80,9 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const LoginWithNavigate = (props) => {
+    const navigate = useNavigate();
+    return <Login {...props} navigate={navigate}  />
+};
+
+export default LoginWithNavigate;

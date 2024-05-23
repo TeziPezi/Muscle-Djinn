@@ -22,17 +22,20 @@ const connection = mysql.createConnection({
 
 app.post('/loginForm', (req, res) =>{
     const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
+
+    const sentloginUserName = req.body.username
+    const sentLoginPassword = req.body.password
   
-    connection.query(sql, [req.body.username, req.body.password], (err, data) =>{
+    connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
         if(err) return res.json("Error");
         if(data.length > 0) {
-            return res.json("Login Successfully")
+            return res.json({loginValue: true, message: 'Login successful'})
         } else {
-            return res.json("No Record")
+            return res.json({loginValue: false, message: 'Login failed'})
         }
     })
 })
 
 app.listen(8081, () => {
-    console.log("Listening...");
+    console.log("Server is running on port 8081");
 })
