@@ -1,105 +1,113 @@
-
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-//import { FaUser, FaLock } from "react-icons/fa";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles.css';
 import axios from 'axios';
 
-class Signup extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            email: '',
-            password: ''
-        };
-    }
+const Signup = () => {
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        password: ''
+    });
 
-    handleSubmit = async (e) => {
-        e.preventDefault();
+    const navigate = useNavigate();
 
-        try {
-            await axios.post('https://45.81.234.159/pvi?v=1', {
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password
-            });
-            alert('User created successfully!');
-        } catch (error) {
-            console.error('Error creating user:', error);
-            alert('Error');
-        }
-    };
-
-    handleChange = (e) => {
-        this.setState({
+    const handleChange = (e) => {
+        setUserData({
+            ...userData,
             [e.target.name]: e.target.value
         });
     };
 
-    render() {
-        const { username, email, password } = this.state;
+    const handleClickLogin = () => {
+        navigate('/loginForm');
+    };
 
-        return (
-            <React.Fragment>
-                <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className='wrapper'>   
-                        <form onSubmit={this.handleSubmit}>
-                            <h1><span style={{ color: "white" }}>Signup</span></h1>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.post('https://45.81.234.159/pvi?v=1', userData);
+            alert('User created successfully!');
+        } catch (error) {
+            console.error('Error creating user:', error);
+            
+        }
+    };
+
+    const { username, email, password } = userData;
+
+    return (
+        <React.Fragment>
+            <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <div className='wrapper'>
+                    <form onSubmit={handleSubmit}>
+                        <h1><span style={{ color: "white" }}>Signup</span></h1>
+
+                        <div className='input-box'>
                             
-                            <div className='input-box'>
-                                <label htmlFor="username">Username</label>
-                                <div className='input-icon'>
-                                    
-                                    <input
-                                        type="text"
-                                        name="username"
-                                        placeholder='Enter username'
-                                        className='form-control'
-                                        value={username}
-                                        onChange={this.handleChange}
-                                    />
-                                </div>
+                            <div className='input-icon'>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    placeholder='Enter username'
+                                    className='form-control'
+                                    value={username}
+                                    onChange={handleChange}
+                                />
                             </div>
+                        </div>
+                        
 
-                            <div className='input-box'>
-                                <label htmlFor="email">Email</label>
-                                <div className='input-icon'>
-                                    
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder='Enter Email'
-                                        className='form-control'
-                                        value={email}
-                                        onChange={this.handleChange}
-                                    />
-                                </div>
-                            </div>
 
-                            <div className='input-box'>
-                                <label htmlFor="password">Password</label>
-                                <div className='input-icon'>
-                                    
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        placeholder='Enter Password'
-                                        className='form-control'
-                                        value={password}
-                                        onChange={this.handleChange}
-                                    />
-                                </div>
-                            </div>
-
-                            <button type="submit" className='btn btn-success'>Sign up</button>
+                        <div className='input-box'>
                             
-                        </form>
-                    </div>
+                            <div className='input-icon'>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder='Enter Email'
+                                    className='form-control'
+                                    value={email}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className='input-box'>
+                            
+                            <div className='input-icon'>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    placeholder='Enter Password'
+                                    className='form-control'
+                                    value={password}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                        
+
+                        <button type="submit" >Sign up</button>
+                        
+                        <div>
+
+                         <p style={{ fontSize: "14px" }}>already have an account? <a href = '/' className="Loginlink" onClick={handleClickLogin} >Login</a> </p>
+                        </div>
+{/* Weiterer Code ... */}
+
+
+
+
+                        
+
+
+                    </form>
                 </div>
-            </React.Fragment>
-        );
-    }
-}
+            </div>
+        </React.Fragment>
+    );
+};
 
 export default Signup;

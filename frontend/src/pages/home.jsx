@@ -8,7 +8,7 @@ class Home extends Component {
     };
 
     handleRegisterClick = () => {
-        this.props.navigate();
+        this.props.navigate('/Signup');
     }
 
     render() {
