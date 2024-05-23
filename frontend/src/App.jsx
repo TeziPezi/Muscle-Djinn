@@ -11,6 +11,8 @@ import History from './pages/history';
 import Settings from './pages/settings';
 import NoPage from './pages/NoPage';
 import Login from './pages/loginForm';
+import Signup from './pages/Signup';
+
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
                     <Route path="/history" element={<History/>} />
                     <Route path="/settings" element={<Settings/>} />
                     <Route path="/loginForm" element={<Login/>} />
+                    <Route path="/Signup" element={<Signup/>} />
                     <Route path="*" element={<NoPage/>} />
                 </Routes>
             </React.Fragment>
