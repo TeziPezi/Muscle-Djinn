@@ -95,7 +95,7 @@ const Signup = () => {
 
                          <p style={{ fontSize: "14px" }}>already have an account? <a href = '/' className="Loginlink" onClick={handleClickLogin} >Login</a> </p>
                         </div>
-{/* Weiterer Code ... */}
+
 
 
 
