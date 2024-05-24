@@ -82,6 +82,7 @@ button:hover {
 
 .wrapper{
   width: 420px;
+  height: 450px;
   border: 2px solid rgba(200, 0, 0, 0.6);
   box-shadow: 0 0 10px rgba(200, 0, 0, 0.6);
   border-radius: 10px;
@@ -118,7 +119,7 @@ button:hover {
   position:absolute;
   left: auto;
   transform: translateX(-170%);
-  top: 29%;
+  top: 27%;
 
 
 }
@@ -127,7 +128,7 @@ button:hover {
   position:absolute;
   left: auto;
   transform: translateX(-170%);
-  top: 47%;
+  top: 45%;
 
 
 }
