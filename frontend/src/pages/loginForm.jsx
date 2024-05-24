@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../styles.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from 'axios'
-import { Link, useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 class Login extends Component {
