@@ -27,7 +27,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            await axios.post('https://45.81.234.159/pvi?v=1', userData);
+            await axios.post('http://45.81.234.159:8081', userData);
             alert('User created successfully!');
         } catch (error) {
             console.error('Error creating user:', error);
