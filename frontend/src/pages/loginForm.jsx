@@ -6,12 +6,19 @@ import { useNavigate } from 'react-router-dom'
 
 
 class Login extends Component {
-    state = {
-        username: '',
-        password: '',
-        message: '',
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: '',
+            message: '',
+        };
 
+       
+        axios.defaults.withCredentials = true;
     }
+
+  
 
     handleInputChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });

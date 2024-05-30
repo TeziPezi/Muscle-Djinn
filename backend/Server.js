@@ -2,14 +2,20 @@ const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './.env'});
 
 const app = express();
 
 app.use(express.json());
-
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
+app.use(cookieParser);
 
 
 
@@ -27,9 +33,18 @@ app.post('/loginForm', (req, res) =>{
     const sentLoginPassword = req.body.password
   
     connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
-        if(err) return res.json("Error");
+        if(err) return res.json("Error") ;
         if(data.length > 0) {
+
+            console.log("hier ist der error");
+            
+            username = data[0].username;
+
+            const token = jwt.sign({sentloginUserName}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
+            res.cookie('token', token);
+
             return res.json({loginValue: true, message: 'Login successful'})
+
         } else {
             return res.json({loginValue: false, message: 'Login failed'})
         }
