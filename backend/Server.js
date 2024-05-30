@@ -29,6 +29,8 @@ const connection = mysql.createConnection({
 app.post('/loginForm', (req, res) =>{
     const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
 
+    console.log("hier ist der error");
+
     const sentloginUserName = req.body.username
     const sentLoginPassword = req.body.password
   
@@ -38,9 +40,9 @@ app.post('/loginForm', (req, res) =>{
 
             console.log("hier ist der error");
             
-            username = data[0].username;
+            username = data[0].Username;
 
-            const token = jwt.sign({sentloginUserName}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
+            const token = jwt.sign({username}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
             res.cookie('token', token);
 
             return res.json({loginValue: true, message: 'Login successful'})
