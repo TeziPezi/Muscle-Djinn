@@ -3,19 +3,18 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-
-dotenv.config({ path: './.env' });
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use(cors()); // CORS Middleware
+app.use(cors());
 
 const connection = mysql.createConnection({
-    host: '45.81.234.159',
-    user: 'muscle_djinn',
-    password: 'sl6PhMaDjHKfOC7h',
-    database: 'muscle_djinn',
+    host: process.env.DB_HOST || '45.81.234.159',
+    user: process.env.DB_USER || 'muscle_djinn',
+    password: process.env.DB_PASSWORD || 'sl6PhMaDjHKfOC7h',
+    database: process.env.DB_NAME || 'muscle_djinn',
 });
 
 connection.connect((err) => {
@@ -26,39 +25,22 @@ connection.connect((err) => {
     console.log('Verbunden mit der MySQL-Datenbank.');
 });
 
-// Sign-Up Route
-app.post('/signup', (req, res) => {
-    const { username, email, password } = req.body;
-    const sql = "INSERT INTO Nutzer (Username, Email, Password) VALUES (?, ?, ?)";
+// Sign-Up 
+app.post("/register", (req, res) => {
+    const { username, password, email } = req.body;
 
-    connection.query(sql, [username, email, password], (err, result) => {
+    const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
+
+    connection.query(query, [username, email, password], (err, results) => {
         if (err) {
-            console.error('Fehler beim Einfügen in die Datenbank:', err);
-            return res.json("Error");
+            console.error('Fehler beim Einfügen der Daten:', err);
+            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         }
-        return res.json("User created successfully!");
-    });
-});
-
-// Login Route
-app.post('/loginForm', (req, res) => {
-    const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
-  
-    connection.query(sql, [req.body.username, req.body.password], (err, data) => {
-        if (err) return res.json("Error");
-        if (data.length > 0) {
-            return res.json("Login Successfully");
-        } else {
-            return res.json("No Record");
-        }
+        console.log('Daten erfolgreich eingefügt:', results);
+        res.status(200).json({ message: 'Registrierung erfolgreich' });
     });
 });
 
 app.listen(8081, () => {
-    console.log("Listening...");
+    console.log("Listening on port 8081...");
 });
-
-
-
-
-

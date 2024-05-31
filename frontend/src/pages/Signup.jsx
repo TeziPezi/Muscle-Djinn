@@ -4,19 +4,27 @@ import '../styles.css';
 import axios from 'axios';
 
 const Signup = () => {
-    const [userData, setUserData] = useState({
-        username: '',
-        email: '',
-        password: ''
-    });
+    const [usernameReg, setUsernameReg] = useState("");
+    const [emailReg, setEmailReg] = useState("");
+    const [passwordReg, setPasswordReg] = useState("");
 
     const navigate = useNavigate();
 
+    const register = () => {
+        axios.post("http://localhost:8081/register", {
+            username: usernameReg,
+            email: emailReg,
+            password: passwordReg
+        }).then((response) => {
+            console.log(response);
+        }).catch(err => console.log(err));
+    };
+
     const handleChange = (e) => {
-        setUserData({
-            ...userData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        if (name === 'username') setUsernameReg(value);
+        if (name === 'email') setEmailReg(value);
+        if (name === 'password') setPasswordReg(value);
     };
 
     const handleClickLogin = () => {
@@ -25,17 +33,8 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        try {
-            await axios.post('http://45.81.234.159:8081', userData);
-            alert('User created successfully!');
-        } catch (error) {
-            console.error('Error creating user:', error);
-            
-        }
+        register();
     };
-
-    const { username, email, password } = userData;
 
     return (
         <React.Fragment>
@@ -45,64 +44,49 @@ const Signup = () => {
                         <h1><span style={{ color: "white" }}>Signup</span></h1>
 
                         <div className='input-box'>
-                            
                             <div className='input-icon'>
                                 <input
                                     type="text"
                                     name="username"
                                     placeholder='Enter username'
                                     className='form-control'
-                                    value={username}
+                                    value={usernameReg}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
-                        
-
 
                         <div className='input-box'>
-                            
                             <div className='input-icon'>
                                 <input
                                     type="email"
                                     name="email"
                                     placeholder='Enter Email'
                                     className='form-control'
-                                    value={email}
+                                    value={emailReg}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
                         
                         <div className='input-box'>
-                            
                             <div className='input-icon'>
                                 <input
                                     type="password"
                                     name="password"
                                     placeholder='Enter Password'
                                     className='form-control'
-                                    value={password}
+                                    value={passwordReg}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
                         
-
-                        <button type="submit" >Sign up</button>
+                        <button type="submit">Sign up</button>
                         
                         <div>
-
-                         <p style={{ fontSize: "14px" }}>already have an account? <a onClick={handleClickLogin} >Login</a> </p>
+                            <p style={{ fontSize: "14px" }}>already have an account? <a onClick={handleClickLogin}>Login</a></p>
                         </div>
-
-
-
-
-
-                        
-
-
                     </form>
                 </div>
             </div>
