@@ -5,10 +5,10 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 
-function Login() {
-    const [values, setValues] = useState ({
-        name: '',
-        password: ''
+function Login  () {
+    const [loginValues, setValues] = useState ({
+        loginUsername: '',
+        loginPassword: ''
     })
 
     const navigate = useNavigate()
@@ -18,20 +18,20 @@ function Login() {
     const handleSubmit =  (event) => {
         event.preventDefault();
         axios.post('http://localhost:8081/loginForm', {
-            name: values.name,
-            password: values.password
+            loginUsername: loginValues.loginUsername,
+            loginPassword: loginValues.loginPassword
         })
 
         .then(res => {
             if(res.data.loginValue){
-                navigate('/training')
-                alert(res.data.token)
+                navigate('/profile')
+
             } else {
                 alert(res.data.message)
             }
         })
 
-        .catch(err => console.log(err+" hier vielleicht"));
+        .catch(err => console.log(err));
     }
 
     return (
@@ -41,12 +41,12 @@ function Login() {
                             <h1><span style={{ color: "white" }}>Login</span></h1>
                             <div className='input-box'>
                                 <input type="text" name="username" placeholder="Username"
-                                /*value={this.state.username}*/ onChange={e => setValues({...values, name: e.target.value})} required />
+                                /*value={this.state.username}*/ onChange={e => setValues({...loginValues, loginUsername: e.target.value})} required />
                                 <FaUser className='icon' />
                             </div>
                             <div className='input-box'>
                                 <input type="password" name='password' placeholder="Password" 
-                                /*value={this.state.password} */ onChange={e => setValues({...values, password: e.target.value})} required />
+                                /*value={this.state.password} */ onChange={e => setValues({...loginValues, loginPassword: e.target.value})} required />
                                 <FaLock className='icon2' />
                             </div>
                             <div className="remember-forgot">
@@ -54,7 +54,7 @@ function Login() {
                                 <a href="/"> Forgot passwort?</a>
                             </div>
 
-                            <button type='submit'>Login</button>
+                            <button className="Button" type='submit'>Login</button>
 
                             <div className='register-link'>
                                 <p>Don't have an account? <a href="/">Register</a></p>

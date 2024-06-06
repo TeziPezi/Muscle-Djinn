@@ -27,12 +27,42 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE,
 });
 
+
+const verifyUser = (req, res, next) => {
+    const existingToken = req.cookies.token;
+    if(!existingToken){
+
+        return res.json({Error: "You are not logged in"});
+    } 
+    else {
+
+        jwt.verify(existingToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
+            if(err) {
+                return res.json({Error: "Token doesn't match!"});
+            } 
+            else 
+            {
+                req.username = decoded.username
+                
+            }; //hier könnte ein Fehler sein
+            next();
+            
+        })
+    }
+}
+
+app.get('/profile', verifyUser, (req, res) =>
+{
+    return res.json({loginValue: true, username: req.username})
+})
+
+
 app.post('/loginForm', (req, res) =>{
     const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
 
 
-    const sentloginUserName = req.body.name
-    const sentLoginPassword = req.body.password
+    const sentloginUserName = req.body.loginUsername
+    const sentLoginPassword = req.body.loginPassword
   
     connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
         if(err) return res.json({Error: "Login error in server"}) ;
@@ -51,6 +81,11 @@ app.post('/loginForm', (req, res) =>{
             return res.json({loginValue: false, message: 'Login failed'})
         }
     })
+})
+
+app.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    return res.json({message: 'Logout was successful'});
 })
 
 app.listen(8081, () => {
