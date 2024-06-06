@@ -2,15 +2,22 @@ const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './.env'});
 
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["Post", "GET"],
+    credentials: true
+}
+));
 
-app.use(cors());
-
+app.use(cookieParser());
 
 
 const connection = mysql.createConnection({
@@ -20,20 +27,65 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE,
 });
 
+
+const verifyUser = (req, res, next) => {
+    const existingToken = req.cookies.token;
+    if(!existingToken){
+
+        return res.json({Error: "You are not logged in"});
+    } 
+    else {
+
+        jwt.verify(existingToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
+            if(err) {
+                return res.json({Error: "Token doesn't match!"});
+            } 
+            else 
+            {
+                req.username = decoded.username
+                
+            }; //hier könnte ein Fehler sein
+            next();
+            
+        })
+    }
+}
+
+app.get('/profile', verifyUser, (req, res) =>
+{
+    return res.json({loginValue: true, username: req.username})
+})
+
+
 app.post('/loginForm', (req, res) =>{
     const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
 
-    const sentloginUserName = req.body.username
-    const sentLoginPassword = req.body.password
+
+    const sentloginUserName = req.body.loginUsername
+    const sentLoginPassword = req.body.loginPassword
   
     connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
-        if(err) return res.json("Error");
+        if(err) return res.json({Error: "Login error in server"}) ;
         if(data.length > 0) {
-            return res.json({loginValue: true, message: 'Login successful'})
+            
+            const username = data[0].Username;
+
+            const token = jwt.sign({username}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
+
+            res.cookie("token", token);
+
+
+            return res.json({loginValue: true, message: 'Login successful', token})
+
         } else {
             return res.json({loginValue: false, message: 'Login failed'})
         }
     })
+})
+
+app.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    return res.json({message: 'Logout was successful'});
 })
 
 app.listen(8081, () => {
