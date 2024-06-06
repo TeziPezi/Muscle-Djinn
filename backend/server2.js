@@ -2,32 +2,22 @@ const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const session = require('express-session');
+const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-
 
 dotenv.config({ path: './.env'});
 
 const app = express();
 
 app.use(express.json());
-
 app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET"],
     credentials: true
 }));
+app.use(cookieParser);
 
-app.use(cookieParser());
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { 
-        secure: false,
-        maxAge: 1000 * 60 * 60 * 24 } // Set to true if using HTTPS
-}));
 
 const connection = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -36,25 +26,33 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE,
 });
 
-
-app.post('/loginForm', (req, res) => {
+app.post('/loginForm', (req, res) =>{
     const sql = "SELECT * FROM Nutzer WHERE Username = ? AND Password = ?";
-    const sentloginUserName = req.body.username;
-    const sentLoginPassword = req.body.password;
 
-    connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) => {
-        if (err) return res.json("Error");
-        if (data.length > 0) {
-           req.session.username = data[0].Username;
-            return res.json({ loginValue: true, username: req.session.username, message: 'Login successful' });
+    console.log("hier ist der error");
+
+    const sentloginUserName = req.body.username
+    const sentLoginPassword = req.body.password
+  
+    connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
+        if(err) return res.json("Error") ;
+        if(data.length > 0) {
+
+            console.log("hier ist der error");
+            
+            username = data[0].Username;
+
+            const token = jwt.sign({username}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
+            res.cookie('token', token);
+
+            return res.json({loginValue: true, message: 'Login successful'})
+
         } else {
-            return res.json({ loginValue: false, message: 'Login failed' });
+            return res.json({loginValue: false, message: 'Login failed'})
         }
-    });
-});
-
-
+    })
+})
 
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
-});
+})
