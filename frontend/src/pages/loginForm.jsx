@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import '../styles.css';
-import { FaUser, FaLock, FaRegFileCode } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,21 +13,27 @@ function Login() {
 
     const navigate = useNavigate()
 
+    axios.defaults.withCredentials = true;
+
     const handleSubmit =  (event) => {
         event.preventDefault();
         axios.post('http://localhost:8081/loginForm', {
             name: values.name,
             password: values.password
         })
+
         .then(res => {
             if(res.data.loginValue){
                 navigate('/training')
+                alert(res.data.token)
             } else {
                 alert(res.data.message)
             }
         })
+
         .catch(err => console.log(err+" hier vielleicht"));
     }
+
     return (
         <div className='container' style={{display: 'flex', justifyContent: 'space-around'}}>
                     <div className='wrapper'>

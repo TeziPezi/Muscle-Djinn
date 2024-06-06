@@ -10,11 +10,14 @@ dotenv.config({ path: './.env'});
 const app = express();
 
 app.use(express.json());
-app.use(cors(
-
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["Post", "GET"],
+    credentials: true
+}
 ));
 
-
+app.use(cookieParser());
 
 
 const connection = mysql.createConnection({
@@ -34,16 +37,15 @@ app.post('/loginForm', (req, res) =>{
     connection.query(sql, [sentloginUserName, sentLoginPassword], (err, data) =>{
         if(err) return res.json({Error: "Login error in server"}) ;
         if(data.length > 0) {
-
-            console.log("hier ist der error");
             
-            username = data[0].Username;
-            // hier aufhören
+            const username = data[0].Username;
 
-            //token = jwt.sign({username}, JWT_SECRET_KEY, {expiresIn: '1d'});
+            const token = jwt.sign({username}, process.env.JWT_SECRET_KEY, {expiresIn: '1d'});
+
+            res.cookie("token", token);
 
 
-            return res.json({loginValue: true, message: 'Login successful'})
+            return res.json({loginValue: true, message: 'Login successful', token})
 
         } else {
             return res.json({loginValue: false, message: 'Login failed'})
