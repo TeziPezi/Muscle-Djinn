@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const bcrypt = require('bcrypt');
 
 dotenv.config();
 
@@ -26,22 +26,35 @@ connection.connect((err) => {
     console.log('Verbunden mit der MySQL-Datenbank.');
 });
 
-// Sign-Up 
-app.post("/register", (req, res) => {
-    const { username, password, email } = req.body;
+// User registration
+app.post("/register", async (req, res) => {
+    const { username, email, password } = req.body;
 
-    const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
-    
-    
+    try {
+        console.log('Received registration data:', { username, email, password });
 
-    connection.query(query, [username, email, password], (err, results) => {
-        if (err) {
-            console.error('Fehler beim Einfügen der Daten:', err);
-            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
-        }
-        console.log('Daten erfolgreich eingefügt:', results);
-        res.status(200).json({ message: 'Registrierung erfolgreich' });
-    });
+        // Ensure the password is a string
+        const passwordString = String(password);
+        console.log('Password as string:', passwordString);
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(passwordString, 10);
+        console.log('Hashed password:', hashedPassword);
+
+        const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
+
+        connection.query(query, [username, email, hashedPassword], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Einfügen der Daten:', err);
+                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+            }
+            console.log('Daten erfolgreich eingefügt:', results);
+            res.status(200).json({ message: 'Registrierung erfolgreich' });
+        });
+    } catch (err) {
+        console.error('Fehler beim Hashen des Passworts:', err);
+        res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
+    }
 });
 
 app.listen(8081, () => {
