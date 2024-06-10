@@ -3,7 +3,6 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-
 dotenv.config();
 
 const app = express();
@@ -26,21 +25,19 @@ connection.connect((err) => {
     console.log('Verbunden mit der MySQL-Datenbank.');
 });
 
-// Sign-Up 
-app.post("/register", (req, res) => {
-    const { username, password, email } = req.body;
+// Übung erstellen
+app.post("/uebung_erstellen", (req, res) => {
+    const { bezeichnung, muskelgruppe, beschreibung } = req.body;
 
-    const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
+    const query = 'INSERT INTO Uebung (bezeichnung, muskelgruppe, beschreibung) VALUES (?, ?, ?)';
     
-    
-
-    connection.query(query, [username, email, password], (err, results) => {
+    connection.query(query, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
         if (err) {
             console.error('Fehler beim Einfügen der Daten:', err);
             return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         }
         console.log('Daten erfolgreich eingefügt:', results);
-        res.status(200).json({ message: 'Registrierung erfolgreich' });
+        res.status(200).json({ message: 'Übung erfolgreich erstellt' });
     });
 });
 
