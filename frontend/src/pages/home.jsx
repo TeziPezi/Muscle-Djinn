@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 class Home extends Component {
 
     state = {
-        auth: false,
+        auth: false, 
     };
 
     componentDidMount() {
@@ -33,7 +33,7 @@ class Home extends Component {
     }
 
     render() {
-        const { auth, message } = this.state;
+        const { auth } = this.state;
 
         return (
             <React.Fragment>
