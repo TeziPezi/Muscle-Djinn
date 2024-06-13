@@ -54,6 +54,38 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+
+// User registration
+app.post("/register", async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        console.log('Received registration data:', { username, email, password });
+
+        // Ensure the password is a string
+        const passwordString = String(password);
+        console.log('Password as string:', passwordString);
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(passwordString, 10);
+        console.log('Hashed password:', hashedPassword);
+
+        const query = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
+
+        pool.query(query, [username, email, hashedPassword], (err, results) => {
+            if (err) {
+                console.error('Fehler beim Einfügen der Daten:', err);
+                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+            }
+            console.log('Daten erfolgreich eingefügt:', results);
+            res.status(200).json({ message: 'Registrierung erfolgreich' });
+        });
+    } catch (err) {
+        console.error('Fehler beim Hashen des Passworts:', err);
+        res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
+    }
+});
+
 app.get('/logged', verifyUser, (req, res) => {
     return res.json({ loginValue: true, username: req.username })
 })
