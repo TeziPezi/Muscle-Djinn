@@ -9,14 +9,21 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // Stelle sicher, dass dies die URL deiner React-Anwendung ist
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST || '45.81.234.159',
-    user: process.env.DB_USER || 'muscle_djinn',
+    host: process.env.DB_HOST || '45.147.7.157',
+    user: process.env.DB_USER || 'muscledjinn',
     password: process.env.DB_PASSWORD || 'sl6PhMaDjHKfOC7h',
-    database: process.env.DB_NAME || 'muscle_djinn',
+    database: process.env.DB_NAME || 'muscledjinn',
 });
+
+const JWT_SECRET_KEY = 'jwt-secret-key';
 
 connection.connect((err) => {
     if (err) {
@@ -26,25 +33,24 @@ connection.connect((err) => {
     console.log('Verbunden mit der MySQL-Datenbank.');
 });
 
-// Beispielhaftes festgelegtes Passwort
-const presetPassword = "hash1234";
+// User registration
+app.post("/register", async (req, res) => {
+    const { Username, E_mail, Password } = req.body;
 
-bcrypt.hash(presetPassword, 10, (err, hashedPassword) => {
-    if (err) {
-        console.error('Fehler beim Hashen des Passworts:', err);
-        return;
-    }
-    console.log('Gehashte Passwort:', hashedPassword);
+    try {
+        console.log('Received registration data:', { Username, E_mail, Password });
 
-    // Beispielhafte Benutzerdaten
-    const username = "hash";
-    const email = "hash@hash.com";
+        // Ensure the password is a string
+        const passwordString = String(Password);
+        console.log('Password as string:', passwordString);
 
-    // Benutzerregistrierung mit festgelegtem Passwort
-    app.post("/register", (req, res) => {
-        const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(passwordString, 10);
+        console.log('Hashed password:', hashedPassword);
 
-        connection.query(query, [username, email, hashedPassword], (err, results) => {
+        const query = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
+
+        connection.query(query, [Username, E_mail, hashedPassword], (err, results) => {
             if (err) {
                 console.error('Fehler beim Einfügen der Daten:', err);
                 return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
@@ -52,22 +58,28 @@ bcrypt.hash(presetPassword, 10, (err, hashedPassword) => {
             console.log('Daten erfolgreich eingefügt:', results);
             res.status(200).json({ message: 'Registrierung erfolgreich' });
         });
-    });
+    } catch (err) {
+        console.error('Fehler beim Hashen des Passworts:', err);
+        res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
+    }
+});
 
-    // Testaufruf zur Registrierung
-    app.get('/testregister', (req, res) => {
-        const query = 'INSERT INTO Nutzer (username, email, password) VALUES (?, ?, ?)';
-        connection.query(query, [username, email, hashedPassword], (err, results) => {
-            if (err) {
-                console.error('Fehler beim Einfügen der Daten:', err);
-                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
-            }
-            console.log('Daten erfolgreich eingefügt:', results);
-            res.status(200).json({ message: 'Testregistrierung erfolgreich' });
-        });
-    });
+// Übung erstellen
+app.post("/uebung_erstellen", (req, res) => {
+    const { bezeichnung, muskelgruppe, beschreibung } = req.body;
 
-    app.listen(8081, () => {
-        console.log("Listening on port 8081...");
+    const query = 'INSERT INTO Ubung (bezeichnung, muskelgruppe, beschreibung) VALUES (?, ?, ?)';
+    
+    connection.query(query, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
+        if (err) {
+            console.error('Fehler beim Einfügen der Daten:', err);
+            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+        }
+        console.log('Daten erfolgreich eingefügt:', results);
+        res.status(200).json({ message: 'Übung erfolgreich erstellt' });
     });
+});
+
+app.listen(8081, () => {
+    console.log("Listening on port 8081...");
 });

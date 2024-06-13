@@ -5,16 +5,16 @@ import axios from 'axios';
 
 const Signup = () => {
     const [usernameReg, setUsernameReg] = useState("");
-    const [emailReg, setEmailReg] = useState("");
+    const [E_mailReg, setE_mailReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
 
     const navigate = useNavigate();
 
     const register = () => {
         axios.post("http://localhost:8081/register", {
-            username: usernameReg,
-            email: emailReg,
-            password: passwordReg
+            Username: usernameReg,
+            E_mail: E_mailReg,
+            Password: passwordReg
         }).then((response) => {
             console.log(response);
         }).catch(err => console.log(err));
@@ -23,7 +23,7 @@ const Signup = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'username') setUsernameReg(value);
-        if (name === 'email') setEmailReg(value);
+        if (name === 'E_mail') setE_mailReg(value);
         if (name === 'password') setPasswordReg(value);
     };
 
@@ -60,10 +60,10 @@ const Signup = () => {
                             <div className='input-icon'>
                                 <input
                                     type="email"
-                                    name="email"
-                                    placeholder='Enter Email'
+                                    name="E_mail"
+                                    placeholder='Enter E-mail'
                                     className='form-control'
-                                    value={emailReg}
+                                    value={E_mailReg}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -85,7 +85,7 @@ const Signup = () => {
                         <button type="submit">Sign up</button>
                         
                         <div>
-                            <p style={{ fontSize: "14px" }}>already have an account? <a onClick={handleClickLogin}>Login</a></p>
+                            <p style={{ fontSize: "14px" }}>Already have an account? <a onClick={handleClickLogin}>Login</a></p>
                         </div>
                     </form>
                 </div>
