@@ -43,12 +43,12 @@ function Login() {
                         <h1><span style={{ color: "white" }}>Login</span></h1>
                         <div className='input-box'>
                             <input type="text" name="username" placeholder="Username"
-                                    /*value={this.state.username}*/ onChange={e => setValues({ ...loginValues, loginUsername: e.target.value })} required />
+                             onChange={e => setValues({ ...loginValues, loginUsername: e.target.value })} required />
                             <FaUser className='icon' />
                         </div>
                         <div className='input-box'>
                             <input type="password" name='password' placeholder="Password"
-                                    /*value={this.state.password} */ onChange={e => setValues({ ...loginValues, loginPassword: e.target.value })} required />
+                             onChange={e => setValues({ ...loginValues, loginPassword: e.target.value })} required />
                             <FaLock className='icon2' />
                         </div>
                         <div className="remember-forgot">
@@ -59,7 +59,7 @@ function Login() {
                         <button className="Button" type='submit'>Login</button>
 
                         <div className='register-link'>
-                            <p>Don't have an account? <a href="/">Register</a></p>
+                            <p>Don't have an account? <a href="/Signup">Register</a></p>
 
                         </div>
                         {/*this.state.message && <p>{this.state.message}</p>*/}

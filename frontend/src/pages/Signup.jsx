@@ -27,13 +27,11 @@ const Signup = () => {
         if (name === 'password') setPasswordReg(value);
     };
 
-    const handleClickLogin = () => {
-        navigate('/loginForm');
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         register();
+        navigate('/')
     };
     return (
         <React.Fragment>
@@ -51,6 +49,7 @@ const Signup = () => {
                                     className='form-control'
                                     value={usernameReg}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
@@ -64,6 +63,7 @@ const Signup = () => {
                                     className='form-control'
                                     value={E_mailReg}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
@@ -77,14 +77,15 @@ const Signup = () => {
                                     className='form-control'
                                     value={passwordReg}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
                         
-                        <button type="submit">Sign up</button>
+                        <button className="Button" type="submit">Sign up</button>
                         
-                        <div>
-                            <p style={{ fontSize: "14px" }}>Already have an account? <a onClick={handleClickLogin}>Login</a></p>
+                        <div className='register-link'>
+                            <p >Already have an account? <a href="/loginForm">Login</a></p>
                         </div>
                     </form>
                 </div>
