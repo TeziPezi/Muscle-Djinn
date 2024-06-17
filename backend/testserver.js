@@ -33,50 +33,13 @@ connection.connect((err) => {
     console.log('Verbunden mit der MySQL-Datenbank.');
 });
 
-// User registration
-app.post("/register", async (req, res) => {
-    const { Username, E_mail, Password } = req.body;
-
-    try {
-        console.log('Received registration data:', { Username, E_mail, Password });
-
-        // Ensure the password is a string
-        const passwordString = String(Password);
-        console.log('Password as string:', passwordString);
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(passwordString, 10);
-        console.log('Hashed password:', hashedPassword);
-
-        const query = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
-
-        connection.query(query, [Username, E_mail, hashedPassword], (err, results) => {
-            if (err) {
-                console.error('Fehler beim Einfügen der Daten:', err);
-                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
-            }
-            console.log('Daten erfolgreich eingefügt:', results);
-            res.status(200).json({ message: 'Registrierung erfolgreich' });
-        });
-    } catch (err) {
-        console.error('Fehler beim Hashen des Passworts:', err);
-        res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
-    }
-});
-
-// Übung erstellen
-app.post("/uebung_erstellen", (req, res) => {
-    const { bezeichnung, muskelgruppe, beschreibung } = req.body;
-
-    const query = 'INSERT INTO Ubung (bezeichnung, muskelgruppe, beschreibung) VALUES (?, ?, ?)';
-    
-    connection.query(query, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
+app.get('/alle_Ubung', (req, res) => {
+    connection.query('SELECT * FROM Ubung', (err, results) => {
         if (err) {
-            console.error('Fehler beim Einfügen der Daten:', err);
-            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+            res.status(500).send(err);
+        } else {
+            res.json(results);
         }
-        console.log('Daten erfolgreich eingefügt:', results);
-        res.status(200).json({ message: 'Übung erfolgreich erstellt' });
     });
 });
 
