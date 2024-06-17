@@ -1,33 +1,42 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
+import Uebungen from './Uebungen';
 
-class Training extends Component {
-    state = {};
+const Training = () => {
+    const navigate = useNavigate();
+    const [visible, setVisible] = useState(false);
 
-    handleclickuebungen = () => {
-        this.props.navigate('/uebungen');
+    const handleClickUebungen = () => {
+        navigate('/uebungen');
     };
 
-    render() {
-        return (
-            <React.Fragment>
-                <div className="headPosition">
-                    <div className="container">
-                        The Trainingpage.<br/><br/>
-                    </div>
+    return (
+        <React.Fragment>
+            <div className="headPosition">
+                <div className="container">
+                    The Trainingpage.<br/><br/>
                 </div>
-                <button onClick={this.handleclickuebungen}>Übungen erstellen</button>
-            </React.Fragment>
-        );
-    }
-}
+            </div>
 
-function withNavigate(Component) {
-    return function(props) {
-        const navigate = useNavigate();
-        return <Component {...props} navigate={navigate} />;
-    }
-}
+            <button onClick={() => setVisible(true)} className="icon-button">
+                <span className="text">Add</span>
+                <FontAwesomeIcon icon={faPlus} className="icon" />
+            </button>
 
-export default withNavigate(Training);
+            <Modal 
+                isOpen={visible} 
+                onRequestClose={() => setVisible(false)}
+                className="modal-content"
+                overlayClassName="modal-overlay"
+            >
+                <Uebungen />
+            </Modal>
+        </React.Fragment>
+    );
+};
+
+export default Training;

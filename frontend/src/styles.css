@@ -57,6 +57,55 @@ nav ul li a {
   padding: 10px;
 }
 
+
+/* pop up uebungen*/
+.modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(33, 29, 29); /* Halbdurchsichtiger Hintergrund */
+}
+
+.modal-content {
+  background-color: #000000; /* Dunkle Hintergrundfarbe */
+  color: #fff; /* Weiße Schriftfarbe */
+  padding: 5px;
+  border-radius: 10px;
+  width: 400px; /* Breite des Modals */
+  max-width: 80%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* test btt*/
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: rgba(200, 0, 0, 0.4);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.icon-button:hover {
+  background-color: rgba(200, 0, 0, 0.6);
+}
+
+.text {
+  margin-right: 8px;
+}
+
+.icon {
+  font-size: 16px;
+}
+/* test btt ende*/
+
 button {
   font-weight: 600;
   width: 150px;
