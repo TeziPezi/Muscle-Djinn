@@ -31,13 +31,13 @@ const Uebungen = () => {
 
     return (
         <React.Fragment>
-            <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <div className='wrapper'>
+            <div className='container1' style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <div className='wrapper1'>
                     <form onSubmit={handleSubmit}>
                         <h1><span style={{ color: "white" }}>Übung erstellen</span></h1>
 
-                        <div className='input-box'>
-                            <div className='input-icon'>
+                        <div className='input-box1'>
+                            <div className='input-icon1'>
                                 <input
                                     type="text"
                                     name="bezeichnung"
@@ -49,8 +49,8 @@ const Uebungen = () => {
                             </div>
                         </div>
 
-                        <div className='input-box'>
-                            <div className='input-icon'>
+                        <div className='input-box1'>
+                            <div className='input-icon1'>
                                 <input
                                     type="text"
                                     name="muskelgruppe"
@@ -62,8 +62,8 @@ const Uebungen = () => {
                             </div>
                         </div>
                         
-                        <div className='input-box'>
-                            <div className='input-icon'>
+                        <div className='input-box1'>
+                            <div className='input-icon1'>
                                 <input
                                     type="text"
                                     name="beschreibung"

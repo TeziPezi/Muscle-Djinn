@@ -69,6 +69,7 @@ const Training = () => {
                 overlayClassName="modal-overlay"
             >
                 <Uebungen />
+                <button onClick={() => setVisible(false)} className="close-button" > </button>
             </Modal>
         </React.Fragment>
     );
