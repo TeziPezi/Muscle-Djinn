@@ -8,8 +8,9 @@ function Settings() {
 
     const [auth, setAuth] = useState(false); // hier false
     const [message, setMessage] = useState('');
+    const [userID, setUserID] = useState('');
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    const [email] = useState('');
     const [showPopup, setShowPopup] = useState(false);
 
     axios.defaults.withCredentials = true;
@@ -19,6 +20,7 @@ function Settings() {
             .then(res => {
                 if (res.data.loginValue) {
                     setAuth(true)
+                    setUserID(res.data.userID)
                     setUsername(res.data.username)
                 }
                 else {
@@ -62,7 +64,7 @@ function Settings() {
                     )
                         : (
                             <div >
-                                <h3>{message}</h3>
+                                {message}
                             </div>
                         )}
                 <EditPopup
@@ -70,6 +72,7 @@ function Settings() {
                     handleClose={handleClosePopup}
                     username={username}
                     email={email}
+                    userID={userID}
                 />
             </div>
         </div>

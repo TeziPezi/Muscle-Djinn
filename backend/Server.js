@@ -44,7 +44,7 @@ const verifyUser = (req, res, next) => {
 
         jwt.verify(existingToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
             if (err) {
-                return res.json({ Error: "Token doesn't match!" });
+                return res.json({ Error: "Token Error" });
             }
             else {
                 req.username = decoded.username
@@ -71,9 +71,9 @@ app.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(passwordString, 10);
         console.log('Hashed password:', hashedPassword);
 
-        const query = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
+        const sql = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
 
-        pool.query(query, [Username, E_mail, hashedPassword], (err, results) => {
+        pool.query(sql, [Username, E_mail, hashedPassword], (err, results) => {
             if (err) {
                 console.error('Fehler beim Einfügen der Daten:', err);
                 return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
@@ -91,9 +91,9 @@ app.post("/register", async (req, res) => {
 app.post("/uebung_erstellen", (req, res) => {
     const { bezeichnung, muskelgruppe, beschreibung } = req.body;
 
-    const query = 'INSERT INTO Ubung (Bezeichnung, Muskelgruppe, Beschreibung) VALUES (?, ?, ?)';
+    const sql = 'INSERT INTO Ubung (Bezeichnung, Muskelgruppe, Beschreibung) VALUES (?, ?, ?)';
 
-    pool.query(query, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
+    pool.query(sql, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
         if (err) {
             console.error('Fehler beim Einfügen der Daten:', err);
             return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
@@ -106,8 +106,18 @@ app.post("/uebung_erstellen", (req, res) => {
 
 
 
-app.get('/logged', verifyUser, (req, res) => {
-    return res.json({ loginValue: true, username: req.username })
+app.get('/logged', verifyUser, async (req, res) => {
+
+    const sql = "SELECT UserID FROM Nutzer WHERE Username = ?";
+
+    pool.query(sql, [req.username], (err, results) => {
+        if (err) {
+            return res.json({ error: 'Fehler beim Lesen der UserID' })
+        }
+        return res.json({ loginValue: true, username: req.username, userID: results[0].UserID })
+    })
+
+
 })
 
 // hier wird User authentifiziert und ein Json Web Token in Cookie erstellt
@@ -153,11 +163,28 @@ app.post('/loginForm', async (req, res) => {
 
 })
 
+app.post('/updateUser', async (req, res) => {
+
+    const sql = "UPDATE Nutzer SET Username = ?, E_Mail = ?, Password = ? WHERE UserID = ?";
+
+    const passwordString = String(req.body.password);
+
+        const hashedPassword = await bcrypt.hash(passwordString, 10);
+
+    pool.query(sql, [req.body.username, req.body.email, hashedPassword, req.body.userID], (err, results) => {
+        if (err) {
+            return res.json({Error: "Fehler beim Update"})
+        }
+        res.clearCookie('token');
+        return res.json({message: "Erfolgreicher Update"})
+    });
+});
+
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     return res.json({ message: 'Logout was successful' });
-})
+});
 
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
-})
+});
