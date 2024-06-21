@@ -44,7 +44,7 @@ const Signup = () => {
                         <h1><span style={{ color: "white" }}>Signup</span></h1>
 
                         <div className='input-box'>
-                            <div className='input-icon'>
+                            <div>
                                 <input
                                     type="text"
                                     name="username"

@@ -75,7 +75,7 @@ const Uebungen = () => {
                             </div>
                         </div>
                         
-                        <button type="submit">Erstellen</button>
+                        <button className="button1" type="submit">Erstellen</button>
                     </form>
                 </div>
             </div>
