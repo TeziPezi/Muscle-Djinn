@@ -1,0 +1,50 @@
+.calendar-wrapper {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.react-calendar {
+    border: none; /* Entfernt den Rahmen des Kalenders */
+    background: transparent; /* Setzt den Hintergrund auf transparent */
+}
+
+.react-calendar__tile {
+    box-shadow: none !important; /* Entfernt Schatten von Kalenderkacheln */
+}
+
+/* Optional: Passe die Farben an, um besser zu deinem Design zu passen */
+.react-calendar__tile {
+    background: rgba(51, 51, 51, 0) !important; /* Setzt die Kachel-Hintergrundfarbe */
+    color: white !important; /* Setzt die Kachel-Textfarbe */
+    border-radius: 0px; /* Rundet die Kanten der Tages-Kacheln ab */
+}
+
+/* Setzt die Kachel-Hintergrundfarbe bei Hover */
+.react-calendar__tile:hover {
+    background: rgba(200, 0, 0, 0.4) !important;
+}
+
+/* Setzt die Kachel-Hintergrundfarbe der ausgewählten Kachel */
+.react-calendar__tile--active {
+    background: rgba(200, 0, 0, 0.6) !important;
+    color: white !important;
+}
+
+/* Anpassung der Navigationsbuttons und des Monats-Jahres-Texts */
+.react-calendar__navigation button {
+    color: white !important;
+    background: rgba(51, 51, 51, 0.6) !important;
+    border-radius: 10px;
+    font-size: 20px;
+    box-shadow: none !important; /* Entfernt den Schatten der Navigationsbuttons */
+}
+
+.react-calendar__navigation button:hover {
+    background: rgba(200, 0, 0, 0.6) !important;
+}
+
+.react-calendar__navigation__label {
+    color: rgb(255, 255, 255) !important;
+    font-size: 10px;
+}
