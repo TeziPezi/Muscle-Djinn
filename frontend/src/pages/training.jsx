@@ -1,33 +1,102 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles.css';
+import axios from 'axios'
 
-class Training extends Component {
-    state = {};
+function Training() {
 
-    handleclickuebungen = () => {
-        this.props.navigate('/uebungen');
+    const [auth, setAuth] = useState(false); // hier false
+    const [message, setMessage] = useState('');
+    const [userID, setUserID] = useState('');
+    const [plans, setPlans] = useState([]);
+
+    const navigate = useNavigate();
+
+    axios.defaults.withCredentials = true;
+
+     useEffect(() => {
+         axios.get('http://localhost:8081/logged')
+            .then(res => {
+                if (res.data.loginValue) {
+                    setAuth(true)
+                    setUserID(res.data.userID)
+                    getPlanData(res.data.userID)
+                }
+                else {
+                    setAuth(false) // hier false
+                    setMessage(res.data.Error)
+                }
+            })
+            .catch(err => console.log(err));
+    }, [])
+
+    const handleclickuebungen = () => {
+        navigate('/uebungen');
     };
 
-    render() {
+    const Exercise = ({ exerciseName }) => {
+        return <li>{exerciseName}</li>
+    }
+
+    const Plan = ({ planName, exercises }) => {
         return (
-            <React.Fragment>
-                <div className="headPosition">
-                    <div className="container">
-                        The Trainingpage.<br/><br/>
+            <div className='Plan'>
+                <h3>{planName}</h3>
+                <ul>
+                    {exercises.map((exercise, index) => (
+                        <Exercise key={index} exerciseName={exercise} />
+                    ))}
+                </ul>
+            </div>
+        );  
+    }; 
+
+    const getPlanData = (userID) => {
+        axios.get(`http://localhost:8081/plan/${userID}`)
+            .then(res =>  { 
+               setMessage(res.data.message);
+               setPlans(res.data.plan); 
+                console.log(res.data.plan)
+                  
+            })
+            .catch(err => console.log(err));
+    };
+
+
+
+    const planData = { 
+        name: "plans[1].Bezeichnung",
+        exercises: ['Bankdrücken', 'Schulterpresse', 'Butterfly']
+
+    };
+
+    return (
+        auth ? (
+            <div className='headPosition'>
+                <div className='container'>
+                    The Trainingpage.<br /><br />
+
+                    <button onClick={handleclickuebungen}>Übungen erstellen</button>
+                    <button type='button' className='Button'>Trainingsplan erstellen</button>
+                    <br />
+                    <br />
+                    <div className='Trainnigsplan'>
+                        <div className='Plan-Wrapper'>
+                            <Plan planName={planData.name} exercises={planData.exercises} />
+                        </div>
                     </div>
                 </div>
-                <button onClick={this.handleclickuebungen}>Übungen erstellen</button>
-            </React.Fragment>
-        );
-    }
-}
+            </div>
+        ) : (
+            <div className='headPosition'>
+                <div className='container'>
+                    The Trainingpage.<br /><br />
 
-function withNavigate(Component) {
-    return function(props) {
-        const navigate = useNavigate();
-        return <Component {...props} navigate={navigate} />;
-    }
-}
+                </div>
+            </div>
+        )
+    )
+};
 
-export default withNavigate(Training);
+export default Training;
+
