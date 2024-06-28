@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'; // Added useEffect import
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 
 const Uebungen = () => {
     const [bezeichnung, setBezeichnung] = useState("");
@@ -10,26 +9,25 @@ const Uebungen = () => {
     const [message, setMessage] = useState('');
     const [userID, setUserID] = useState('');
 
-    
-
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
         axios.get('http://localhost:8081/logged')
             .then(res => {
                 if (res.data.loginValue) {
-                    setAuth(true)
-                    setUserID(res.data.userID)
+                    setAuth(true);
+                    setUserID(res.data.userID);
                     console.log("User ID set:", res.data.userID); // Log userID
                 } else {
-                    setAuth(false)
-                    setMessage(res.data.Error)
+                    setAuth(false);
+                    setMessage(res.data.Error);
                 }
             })
             .catch(err => console.log(err));
-    }, [])
+    }, []);
 
     const uebungErstellen = () => {
+        console.log("Sending User ID:", userID); // Log userID during post request
         axios.post("http://localhost:8081/uebung_erstellen", {
             bezeichnung,
             muskelgruppe,
@@ -38,6 +36,14 @@ const Uebungen = () => {
         }).then((response) => {
             console.log(response);
         }).catch(err => console.log(err));
+    };
+
+    const cacheUebung = () => {
+        const cachedExercises = JSON.parse(localStorage.getItem('cachedExercises')) || [];
+        const newExercise = { bezeichnung, muskelgruppe, beschreibung };
+        cachedExercises.push(newExercise);
+        localStorage.setItem('cachedExercises', JSON.stringify(cachedExercises));
+        console.log("Exercise cached:", newExercise);
     };
 
     const handleChange = (e) => {
@@ -49,7 +55,14 @@ const Uebungen = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        uebungErstellen();
+        switch(auth) {
+            case true:
+                uebungErstellen();
+                break;
+            default:
+                cacheUebung();
+                break;
+        }
     };
 
     return (
