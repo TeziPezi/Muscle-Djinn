@@ -7,6 +7,9 @@ const Signup = () => {
     const [usernameReg, setUsernameReg] = useState("");
     const [E_mailReg, setE_mailReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
+    const [confirmPasswordReg, setConfirmPasswordReg] = useState(""); 
+    const [passwordsMatch, setPasswordsMatch] = useState(true); 
+    const [showPassword, setShowPassword] = useState(false); 
 
     const navigate = useNavigate();
 
@@ -25,14 +28,24 @@ const Signup = () => {
         if (name === 'username') setUsernameReg(value);
         if (name === 'E_mail') setE_mailReg(value);
         if (name === 'password') setPasswordReg(value);
+        if (name === 'confirmPassword') setConfirmPasswordReg(value);
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (passwordReg !== confirmPasswordReg) {
+            setPasswordsMatch(false);
+            return;
+        }
+        setPasswordsMatch(true);
         register();
         navigate('/')
     };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <React.Fragment>
             <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
@@ -69,9 +82,9 @@ const Signup = () => {
                         </div>
                         
                         <div className='input-box'>
-                        <div className='input-icon'>
+                            <div className='input-icon' style={{ position: 'relative' }}>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     placeholder='Enter Password'
                                     className='form-control'
@@ -79,13 +92,55 @@ const Signup = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                <span
+                                    onClick={toggleShowPassword}
+                                    style={{
+                                        position: 'absolute',
+                                        right: 10,
+                                        top: 10,
+                                        cursor: 'pointer',
+                                        color: '#aaa'
+                                    }}
+                                >
+                                    {showPassword ? '🙈' : '👁️'}
+                                </span>
                             </div>
                         </div>
+                        
+                        <div className='input-box'>
+                            <div className='input-icon' style={{ position: 'relative' }}>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="confirmPassword"
+                                    placeholder='Confirm Password'
+                                    className='form-control'
+                                    value={confirmPasswordReg}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <span
+                                    onClick={toggleShowPassword}
+                                    style={{
+                                        position: 'absolute',
+                                        right: 10,
+                                        top: 10,
+                                        cursor: 'pointer',
+                                        color: '#aaa'
+                                    }}
+                                >
+                                    {showPassword ? '🙈' : '👁️'}
+                                </span>
+                            </div>
+                        </div>
+
+                        {!passwordsMatch && (
+                            <p style={{ color: 'red' }}>Passwords do not match!</p>
+                        )}
                         
                         <button className="Button" type="submit">Sign up</button>
                         
                         <div className='register-link'>
-                            <p >Already have an account? <a href="/loginForm">Login</a></p>
+                            <p>Already have an account? <a href="/loginForm">Login</a></p>
                         </div>
                     </form>
                 </div>
