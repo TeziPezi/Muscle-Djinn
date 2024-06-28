@@ -89,16 +89,17 @@ app.post("/register", async (req, res) => {
 
 // Übung erstellen
 app.post("/uebung_erstellen", (req, res) => {
-    const { bezeichnung, muskelgruppe, beschreibung } = req.body;
+    const { bezeichnung, muskelgruppe, beschreibung,userID } = req.body;
+    console.log("Request Body:", req.body);
+    const sql = 'INSERT INTO Ubung (Bezeichnung, Muskelgruppe, Beschreibung,UserID) VALUES (?, ?, ?, ?)';
 
-    const sql = 'INSERT INTO Ubung (Bezeichnung, Muskelgruppe, Beschreibung) VALUES (?, ?, ?)';
-
-    pool.query(sql, [bezeichnung, muskelgruppe, beschreibung], (err, results) => {
+    pool.query(sql, [bezeichnung, muskelgruppe, beschreibung,userID], (err, results) => {
         if (err) {
             console.error('Fehler beim Einfügen der Daten:', err);
             return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         }
         console.log('Daten erfolgreich eingefügt:', results);
+        
         res.status(200).json({ message: 'Übung erfolgreich erstellt' });
     });
 });

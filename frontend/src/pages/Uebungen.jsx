@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect import
 import axios from 'axios';
+
 
 const Uebungen = () => {
     const [bezeichnung, setBezeichnung] = useState("");
     const [muskelgruppe, setMuskelgruppe] = useState("");
     const [beschreibung, setBeschreibung] = useState("");
+    const [auth, setAuth] = useState(false);
+    const [message, setMessage] = useState('');
+    const [userID, setUserID] = useState('');
+
+    
+
+    axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        axios.get('http://localhost:8081/logged')
+            .then(res => {
+                if (res.data.loginValue) {
+                    setAuth(true)
+                    setUserID(res.data.userID)
+                    console.log("User ID set:", res.data.userID); // Log userID
+                } else {
+                    setAuth(false)
+                    setMessage(res.data.Error)
+                }
+            })
+            .catch(err => console.log(err));
+    }, [])
 
     const uebungErstellen = () => {
         axios.post("http://localhost:8081/uebung_erstellen", {
             bezeichnung,
             muskelgruppe,
-            beschreibung
+            beschreibung,
+            userID
         }).then((response) => {
             console.log(response);
         }).catch(err => console.log(err));
@@ -83,5 +107,3 @@ const Uebungen = () => {
 };
 
 export default Uebungen;
-
-
