@@ -43,7 +43,7 @@ const Uebungen = () => {
         const newExercise = { bezeichnung, muskelgruppe, beschreibung };
         cachedExercises.push(newExercise);
         localStorage.setItem('cachedExercises', JSON.stringify(cachedExercises));
-        console.log("Exercise cached:", newExercise);
+        console.log("Exercise cached:", newExercise);//t
     };
 
     const handleChange = (e) => {
