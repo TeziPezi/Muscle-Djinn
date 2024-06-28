@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../styles.css';
 import axios from 'axios';
 
 const Uebungen = () => {
@@ -31,51 +30,51 @@ const Uebungen = () => {
 
     return (
         <React.Fragment>
-            <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <div className='wrapper'>
+            <div className='con' style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <div className='wrapp'>
                     <form onSubmit={handleSubmit}>
                         <h1><span style={{ color: "white" }}>Übung erstellen</span></h1>
 
-                        <div className='input-box'>
-                            <div className='input-icon'>
-                                <input
+                        <div className='eingabe-box'>
+                            <div className='eingabe-icon'>
+                                <input 
                                     type="text"
                                     name="bezeichnung"
                                     placeholder='Enter exercise name'
-                                    className='form-control'
+                                    className='eingang'
                                     value={bezeichnung}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
 
-                        <div className='input-box'>
-                            <div className='input-icon'>
+                        <div className='eingabe-box'>
+                            <div className='eingabe-icon'>
                                 <input
                                     type="text"
                                     name="muskelgruppe"
                                     placeholder='Enter muscle group'
-                                    className='form-control'
+                                    className='eingang'
                                     value={muskelgruppe}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
                         
-                        <div className='input-box'>
-                            <div className='input-icon'>
+                        <div className='eingabe-box'>
+                            <div className='eingabe-icon'>
                                 <input
                                     type="text"
                                     name="beschreibung"
                                     placeholder='Enter description'
-                                    className='form-control'
+                                    className='eingang'
                                     value={beschreibung}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
                         
-                        <button type="submit">Erstellen</button>
+                        <button className="knopf" type="submit">Erstellen</button>
                     </form>
                 </div>
             </div>
@@ -84,3 +83,5 @@ const Uebungen = () => {
 };
 
 export default Uebungen;
+
+
