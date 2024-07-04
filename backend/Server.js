@@ -193,6 +193,10 @@ app.get('/plan/:userID', (req, res) => {
 
 })
 
+/*app.get('/exercises/:planID', (req, res) => {
+    const sql = "SELECT * FROM Ubung WHERE UserID = ?"
+})*/
+
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     return res.json({ message: 'Logout was successful' });

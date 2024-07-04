@@ -8,6 +8,7 @@ function Training() {
     const [auth, setAuth] = useState(false); // hier false
     const [message, setMessage] = useState('');
     const [userID, setUserID] = useState('');
+    const [planData, setPlanData] = useState([]);
     const [plans, setPlans] = useState([]);
 
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Training() {
         return <li>{exerciseName}</li>
     }
 
-    const Plan = ({ planName, exercises }) => {
+    const Plan = ({ planName, exercises = [] }) => {
         return (
             <div className='Plan'>
                 <h3>{planName}</h3>
@@ -55,20 +56,19 @@ function Training() {
         axios.get(`http://localhost:8081/plan/${userID}`)
             .then(res =>  { 
                setMessage(res.data.message);
-               setPlans(res.data.plan); 
+               setPlanData(res.data.plan); 
                 console.log(res.data.plan)
                   
             })
             .catch(err => console.log(err));
     };
 
+   /* const getExercisesForPlan = (planID) => {
+        axios.get(`http://localhost:8081/exercises/${planID}`)
+            .then(res => {
+            })
+    }*/
 
-
-    const planData = { 
-        name: "plans[1].Bezeichnung",
-        exercises: ['Bankdrücken', 'Schulterpresse', 'Butterfly']
-
-    };
 
     return (
         auth ? (
@@ -82,7 +82,9 @@ function Training() {
                     <br />
                     <div className='Trainnigsplan'>
                         <div className='Plan-Wrapper'>
-                            <Plan planName={planData.name} exercises={planData.exercises} />
+                        {/*plans.map((plan, index) => (
+                                <Plan key={index} planName={plan.name} exercises={plan.exercises} />
+                            ))*/}
                         </div>
                     </div>
                 </div>
