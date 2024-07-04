@@ -16,6 +16,7 @@ const Nav = styled.nav`
   bottom: 0px;
   width: 100%;
   height: 10%;
+  z-index: 1000;
 `;
 
 const NavList = styled.ul`

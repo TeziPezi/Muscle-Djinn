@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Logo from '../img/logo_5.png'
+import Logo from '../logo.png'
 
 class Header extends Component {
     state = {}
