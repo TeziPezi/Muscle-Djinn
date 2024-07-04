@@ -183,12 +183,29 @@ app.post('/updateUser', async (req, res) => {
 
     pool.query(sql, [req.body.username, req.body.email, hashedPassword, req.body.userID], (err, results) => {
         if (err) {
-            return res.json({Error: "Fehler beim Update"})
+            return res.json({message: "Fehler beim Update"})
         }
         res.clearCookie('token');
         return res.json({message: "Erfolgreicher Update"})
     });
 });
+
+app.get('/plan/:userID', (req, res) => {
+    const sql = "SELECT * FROM Plan WHERE UserID = ?"; // hier weiter machen
+    const userID = req.params.userID;
+
+    pool.query(sql, [userID], (err, results) => {
+        if (err) {
+            return res.json({message: "Fehler bei der Suche nach Plänen"})
+        }
+        return res.json({plan: results, message: "Pläne erfolgreich gefunden"}) 
+    });
+
+})
+
+/*app.get('/exercises/:planID', (req, res) => {
+    const sql = "SELECT * FROM Ubung WHERE UserID = ?"
+})*/
 
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
