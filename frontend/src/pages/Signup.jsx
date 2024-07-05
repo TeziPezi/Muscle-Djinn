@@ -45,7 +45,7 @@ const Signup = () => {
                                 <input
                                     type="text"
                                     name="username"
-                                    placeholder='Enter username'
+                                    placeholder='Enter Username'
                                     className='form-control'
                                     value={usernameReg}
                                     onChange={handleChange}
@@ -59,7 +59,7 @@ const Signup = () => {
                                 <input
                                     type="email"
                                     name="E_mail"
-                                    placeholder='Enter E-mail'
+                                    placeholder='Enter E-Mail'
                                     className='form-control'
                                     value={E_mailReg}
                                     onChange={handleChange}
