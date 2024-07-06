@@ -11,7 +11,7 @@ function Login() {
         loginPassword: ''
     })
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
 

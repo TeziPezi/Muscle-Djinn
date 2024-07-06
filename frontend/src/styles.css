@@ -250,6 +250,45 @@ button:hover {
   justify-content: space-between;
 }
 
+/*Das Aussehen für Trainigsplan*/
+
+.Trainnigsplan {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  
+}
+
+.Plan-Wrapper {
+  background-color: rgb(51, 51, 51);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(200, 0, 0, 0.4);
+  padding: 20px;
+  margin:  20px;
+  width: 300px;
+}
+
+
+.Plan h3 {
+  margin-top: 0;
+}
+
+.Plan {
+  margin-bottom: 20px;
+}
+
+.Plan ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.Plan li {
+  background-color: rgba(134, 0, 0, 0.6);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  padding: 10px;
+}
 
 /* Jonas-css*/
 .modal-overlay {
