@@ -179,33 +179,42 @@ app.post('/updateUser', async (req, res) => {
 
     const passwordString = String(req.body.password);
 
-        const hashedPassword = await bcrypt.hash(passwordString, 10);
+    const hashedPassword = await bcrypt.hash(passwordString, 10);
 
     pool.query(sql, [req.body.username, req.body.email, hashedPassword, req.body.userID], (err, results) => {
         if (err) {
-            return res.json({message: "Fehler beim Update"})
+            return res.json({ message: "Fehler beim Update" })
         }
         res.clearCookie('token');
-        return res.json({message: "Erfolgreicher Update"})
+        return res.json({ message: "Erfolgreicher Update" })
     });
 });
 
 app.get('/plan/:userID', (req, res) => {
-    const sql = "SELECT * FROM Plan WHERE UserID = ?"; // hier weiter machen
+
     const userID = req.params.userID;
+
+    sql = `
+    SELECT Plan.PlanID, Plan.Bezeichnung AS PlanBezeichnung, Plan.Beschreibung AS PlanBeschreibung, 
+         Ubung.UbungID, Ubung.Bezeichnung AS UbungBezeichnung, Ubung.Muskelgruppe, Ubung.Beschreibung AS UbungBeschreibung
+        FROM Plan
+        JOIN Plan_Ubung ON Plan.PlanID = Plan_Ubung.PlanID
+        JOIN Ubung ON Plan_Ubung.UbungID = Ubung.UbungID
+        WHERE Plan.UserID = ?
+  `;
 
     pool.query(sql, [userID], (err, results) => {
         if (err) {
-            return res.json({message: "Fehler bei der Suche nach Plänen"})
+            return res.status(500).json({ error: 'Fehler beim Abrufen der Pläne und Übungen' });
         }
-        return res.json({plan: results, message: "Pläne erfolgreich gefunden"}) 
-    });
+           
+        return res.json(results);
+        
+    })
+});
 
-})
 
-/*app.get('/exercises/:planID', (req, res) => {
-    const sql = "SELECT * FROM Ubung WHERE UserID = ?"
-})*/
+
 
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
