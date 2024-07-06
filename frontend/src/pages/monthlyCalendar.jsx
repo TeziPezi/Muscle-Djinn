@@ -4,14 +4,38 @@ import 'react-calendar/dist/Calendar.css';
 import moment from 'moment';
 import './monthlyCalendar.css';
 import '../styles.css';
+import axios from 'axios';
 
 class MonthlyCalendar extends Component {
     state = {
-        dateState: new Date()
+        dateState: new Date(),
+        trainingDates: []
     };
+
+    componentDidMount() {
+        this.fetchTrainingDates();
+    }
+
+    fetchTrainingDates = async () => {
+        try {
+            const response = await axios.get('http://localhost:8081/trainingDates', { withCredentials: true });
+            const trainingDates = response.data.map(entry => new Date(entry.Datum).toISOString().split('T')[0]);  
+            this.setState({ trainingDates });
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Trainingsdaten:', error);
+        }
+    }
 
     changeDate = (e) => {
         this.setState({ dateState: e });
+    }
+
+    renderTileContent = ({ date, view }) => {
+        if (view === 'month') {
+            const dateString = date.toISOString().split('T')[0];
+            const hasTraining = this.state.trainingDates.includes(dateString);
+            return hasTraining ? <div className="training-indicator"></div> : null;
+        }
     }
 
     render() {
@@ -28,6 +52,7 @@ class MonthlyCalendar extends Component {
                                 prev2Label="<<"
                                 next2Label=">>"
                                 formatMonthYear={(locale, date) => moment(date).format('MMMM YYYY')}
+                                tileContent={this.renderTileContent}
                             />
                         </div>
                         <br/>
