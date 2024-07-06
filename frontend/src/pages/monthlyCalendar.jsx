@@ -9,7 +9,8 @@ import axios from 'axios';
 class MonthlyCalendar extends Component {
     state = {
         dateState: new Date(),
-        trainingDates: []
+        trainingDates: [],
+        selectedTraining: ''
     };
 
     componentDidMount() {
@@ -22,12 +23,27 @@ class MonthlyCalendar extends Component {
             const trainingDates = response.data.map(entry => new Date(entry.Datum).toISOString().split('T')[0]);  
             this.setState({ trainingDates });
         } catch (error) {
-            console.error('Fehler beim Abrufen der Trainingsdaten:', error);
+            console.error('Error retrieving training data:', error);
+        }
+    }
+
+    fetchTrainingByDate = async (date) => {
+        try {
+            const formattedDate = date.toISOString().split('T')[0];
+            const response = await axios.get('http://localhost:8081/trainingByDate', {
+                params: { date: formattedDate },
+                withCredentials: true
+            });
+            this.setState({ selectedTraining: response.data.training });
+        } catch (error) {
+            console.error('Error retrieving training for the date:', error);
         }
     }
 
     changeDate = (e) => {
-        this.setState({ dateState: e });
+        this.setState({ dateState: e }, () => {
+            this.fetchTrainingByDate(e);
+        });
     }
 
     renderTileContent = ({ date, view }) => {
@@ -57,6 +73,7 @@ class MonthlyCalendar extends Component {
                         </div>
                         <br/>
                         <p>Selected date: <b>{moment(this.state.dateState).format('MMMM Do YYYY')}</b></p>
+                        <p>Training was: <b>{this.state.selectedTraining}</b></p>
                         <br/><br/>
                     </div>
                 </div>
