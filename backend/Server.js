@@ -55,6 +55,17 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+// Kalender-Komponente -> Datenbankabruf
+app.get('/trainingDates', verifyUser, async (req, res) => {
+    try {
+        const sql = "SELECT Datum FROM Kalender WHERE UserID = (SELECT UserID FROM Nutzer WHERE Username = ?)";
+        const [results] = await promisePool.query(sql, [req.username]);
+        res.json(results);
+    } catch (err) {
+        console.error('Error retrieving training data:', err);
+        res.status(500).send('Server Error');
+    }
+});
 
 // User registration
 app.post("/register", async (req, res) => {
