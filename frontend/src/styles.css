@@ -252,12 +252,6 @@ button:hover {
 
 /*Das Aussehen für Trainigsplan*/
 
-.Trainnigsplan {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  
-}
 
 .Plan-Wrapper {
   background-color: rgb(51, 51, 51);
@@ -265,9 +259,15 @@ button:hover {
   box-shadow: 0 0 10px rgba(200, 0, 0, 0.4);
   padding: 20px;
   margin:  20px;
-  width: 300px;
+  width: auto;
+ 
 }
 
+.Trainingsplan-list {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 
 .Plan h3 {
   margin-top: 0;
@@ -275,6 +275,7 @@ button:hover {
 
 .Plan {
   margin-bottom: 20px;
+  
 }
 
 .Plan ul {

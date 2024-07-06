@@ -10,9 +10,7 @@ import axios from 'axios';
 function Training() {
 
     const [auth, setAuth] = useState(false); // hier false
-    const [message, setMessage] = useState('');
     const [userID, setUserID] = useState('');
-    const [planData, setPlanData] = useState([]);
     const [plans, setPlans] = useState([]);
     const [visible, setVisible] = useState(false);
     const [Ubung, setUbung] = useState([]);
@@ -31,7 +29,6 @@ function Training() {
                 }
                 else {
                     setAuth(false) // hier false
-                    setMessage(res.data.Error)
                 }
             })
             .catch(err => console.log(err));
@@ -51,43 +48,63 @@ function Training() {
         fetchData();
     }, []);
 
-    const handleclickuebungen = () => {
-        navigate('/uebungen');
-    };
 
-    const Exercise = ({ exerciseName }) => {
-        return <li>{exerciseName}</li>
-    }
-
-    const Plan = ({ planName, exercises = [] }) => {
-        return (
-            <div className='Plan'>
-                <h3>{planName}</h3>
-                <ul>
-                    {exercises.map((exercise, index) => (
-                        <Exercise key={index} exerciseName={exercise} />
-                    ))}
-                </ul>
-            </div>
-        );
-    };
 
     const getPlanData = (userID) => {
         axios.get(`http://localhost:8081/plan/${userID}`)
             .then(res => {
-                setMessage(res.data.message);
-                setPlanData(res.data.plan);
-                console.log(res.data.plan)
+                setPlans(res.data);
 
             })
             .catch(err => console.log(err));
     };
 
-    /* const getExercisesForPlan = (planID) => {
-         axios.get(`http://localhost:8081/exercises/${planID}`)
-             .then(res => {
-             })
-     }*/
+    const handleclickuebungen = () => {
+        navigate('/uebungen');
+    };
+
+    const handleclickstartTraining = () => {
+
+    };
+
+    const Exercise = ({ exercise }) => {
+        return <li>{exercise.UbungBezeichnung}</li>;
+    };
+
+
+    const Plan = ({ plan }) => {
+        // Filtere die Übungen für den aktuellen Plan
+        const exercises = plans.filter(p => p.PlanID === plan.PlanID);
+
+        return (
+            <div className='Plan'>
+                <h3>{plan.PlanBezeichnung}</h3>
+                <ul>
+                    {exercises.map((exercise, index) => (
+                        <Exercise key={index} exercise={exercise} />
+                    ))}
+                </ul>
+                <button type="button" className='Button' onClick={handleclickstartTraining}>start</button>
+            </div>
+        );
+    };
+
+
+
+    const PlanList = ({ plans }) => {
+        // Erstelle eine Liste von eindeutigen Plänen
+        const uniquePlans = Array.from(new Set(plans.map(p => p.PlanID))).map(planID => {
+            return plans.find(p => p.PlanID === planID);
+        });
+
+        return (
+            <div className='Trainingsplan-list'>
+                {uniquePlans.map((plan, index) => (
+                    <Plan key={index} plan={plan} />
+                ))}
+            </div>
+        );
+    };
 
 
     return (
@@ -97,13 +114,13 @@ function Training() {
                     The Trainingpage.<br /><br />
 
                     <button onClick={() => setVisible(true)} className="icon-button">
-                    <span className="text">Add</span>
-                    <FontAwesomeIcon icon={faPlus} className="icon" />
-                </button>
+                        <span className="text">Add</span>
+                        <FontAwesomeIcon icon={faPlus} className="icon" />
+                    </button>
 
-                <button className='icon-button'><span className="text">Trainnigsplan Erstellen</span>
-                <FontAwesomeIcon icon={faPlus} className="icon" />
-                </button>
+                    <button className='icon-button'><span className="text">add new plan</span>
+                        <FontAwesomeIcon icon={faPlus} className="icon" />
+                    </button>
 
 
                     <div className="table-container">
@@ -127,43 +144,39 @@ function Training() {
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-              
-                <Modal
-                    isOpen={visible}
-                    onRequestClose={() => setVisible(false)}
-                    className="modal-content"
-                    overlayClassName="modal-overlay"
-                >
-                    <Uebungen />
-                    <button onClick={() => setVisible(false)} className="close-button" > </button>
-                </Modal>
+                    <br />
+                    
 
-                <br />
-                <br />
-                <div className='Trainnigsplan'>
+                    <Modal
+                        isOpen={visible}
+                        onRequestClose={() => setVisible(false)}
+                        className="modal-content"
+                        overlayClassName="modal-overlay"
+                    >
+                        <Uebungen />
+                        <button onClick={() => setVisible(false)} className="close-button" > </button>
+                    </Modal>
+
                     <div className='Plan-Wrapper'>
-                        {/*plans.map((plan, index) => (
-                                <Plan key={index} planName={plan.name} exercises={plan.exercises} />
-                            ))*/}
+                        <h2>My training plans</h2>
+                        <PlanList plans={plans} />
+
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
             </div>
-           
-        ) : (
-        <div className='headPosition'>
-            <div className='container'>
-                The Trainingpage.<br /><br />
 
+        ) : (
+            <div className='headPosition'>
+                <div className='container'>
+                    The Trainingpage.<br /><br />
+
+                </div>
             </div>
-        </div>
-    )
+        )
     )
 };
 
