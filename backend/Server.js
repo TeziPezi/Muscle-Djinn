@@ -154,7 +154,7 @@ app.get('/Ubung', (req, res) => {
 
 
 
-
+// Überprüfung ob der User eingeloggt ist
 app.get('/logged', verifyUser, async (req, res) => {
 
     const sql = "SELECT UserID FROM Nutzer WHERE Username = ?";
@@ -212,6 +212,7 @@ app.post('/loginForm', async (req, res) => {
 
 })
 
+// hier werden User Daten geupdated
 app.post('/updateUser', async (req, res) => {
 
     const sql = "UPDATE Nutzer SET Username = ?, E_Mail = ?, Password = ? WHERE UserID = ?";
@@ -229,11 +230,12 @@ app.post('/updateUser', async (req, res) => {
     });
 });
 
+// hier werden die Pläne und Übungen vom User geholt
 app.get('/plan/:userID', (req, res) => {
 
     const userID = req.params.userID;
 
-    sql = `
+   const sql1 = `
     SELECT Plan.PlanID, Plan.Bezeichnung AS PlanBezeichnung, Plan.Beschreibung AS PlanBeschreibung, 
          Ubung.UbungID, Ubung.Bezeichnung AS UbungBezeichnung, Ubung.Muskelgruppe, Ubung.Beschreibung AS UbungBeschreibung
         FROM Plan
@@ -242,19 +244,28 @@ app.get('/plan/:userID', (req, res) => {
         WHERE Plan.UserID = ?
   `;
 
-    pool.query(sql, [userID], (err, results) => {
+    const sql2 = 'SELECT bezeichnung, muskelgruppe, beschreibung FROM Ubung WHERE UserID = ?'
+
+    pool.query(sql1, [userID], (err, plans) => {
         if (err) {
-            return res.status(500).json({ error: 'Fehler beim Abrufen der Pläne und Übungen' });
+            return res.status(500).json({ error: 'Fehler beim Abrufen der Pläne' });
         }
-           
-        return res.json(results);
+
+        pool.query(sql2, [userID], (err, allExercises) => {
+            if (err) {
+                return res.status(500).json({ error: 'Fehler beim Abrufen der Übungen' });
+            }
+            
+            return res.json({plans, allExercises});
+        })
+        
         
     })
 });
 
 
 
-
+// hier wird der User Ausgeloggt
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     return res.json({ message: 'Logout was successful' });

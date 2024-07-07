@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import EditPopup from '../component/editPopup';
 import '../styles.css';
 import axios from 'axios'
@@ -16,6 +17,8 @@ function Settings() {
     const [showPopup, setShowPopup] = useState(false);
 
     axios.defaults.withCredentials = true;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/logged`)
@@ -49,6 +52,18 @@ function Settings() {
         setShowPopup(false);
     };
 
+    const handleLoginClick = () => {
+        navigate('/loginForm');
+    };
+
+    const handleRegisterClick = () => {
+        navigate('/Signup');
+    }
+
+    const handleGuestClick = () => {
+        navigate('/');
+    }
+
     return (
         <div className='headPosition'>
             <div className='container'>
@@ -65,8 +80,17 @@ function Settings() {
                         </div>
                     )
                         : (
-                            <div >
-                                {message}
+
+                            <div className="headPosition">
+                                <div className="container">
+                                    {message}
+                                    <br /><br />
+                                    <button type="button" className="Button" onClick={handleLoginClick}>Login</button>
+                                    <br /><br />
+                                    <button type="button" className="Button" onClick={handleRegisterClick}>Register</button>
+                                    <br /><br />
+                                    <button type="button" className="Button" onClick={handleGuestClick}>Als Gast fortfahren</button>
+                                </div>
                             </div>
                         )}
                 <EditPopup
