@@ -181,7 +181,7 @@ button:hover {
   text-decoration: underline;
 }
 
-/*Das Aussehen für Popup*/
+/*Das Aussehen für editPopup*/
 
 .popup {
     position: fixed;
@@ -249,12 +249,13 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
+/*Das Aussehen für editPopup*/
 
 /*Das Aussehen für Trainigsplan*/
 
 
 .Plan-Wrapper {
-  background-color: rgb(51, 51, 51);
+  
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(200, 0, 0, 0.4);
   padding: 20px;
@@ -275,6 +276,9 @@ button:hover {
 
 .Plan {
   margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: rgb(51, 51, 51);
+  padding: 20px;
   
 }
 

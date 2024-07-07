@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
 import Uebungen from './Uebungen';
+import EditPopup from '../component/addPlanPopup';
 import axios from 'axios';
+import AddPlanPopup from '../component/addPlanPopup';
 
 function Training() {
 
@@ -13,6 +16,7 @@ function Training() {
     const [userID, setUserID] = useState('');
     const [plans, setPlans] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [showAddPlanPopup, setShowAddPlanPopup] = useState(false);
     const [Ubung, setUbung] = useState([]);
 
     const navigate = useNavigate();
@@ -59,13 +63,19 @@ function Training() {
             .catch(err => console.log(err));
     };
 
-    const handleclickuebungen = () => {
-        navigate('/uebungen');
-    };
 
     const handleclickstartTraining = () => {
 
     };
+
+    const addPlan = () => {
+        setShowAddPlanPopup(true);
+    };
+
+    const handleClosePopup = () => {
+        setShowAddPlanPopup(false);
+    };
+
 
     const Exercise = ({ exercise }) => {
         return <li>{exercise.UbungBezeichnung}</li>;
@@ -84,7 +94,10 @@ function Training() {
                         <Exercise key={index} exercise={exercise} />
                     ))}
                 </ul>
-                <button type="button" className='Button' onClick={handleclickstartTraining}>start</button>
+                <div>
+                    <button type="button" className='Button' onClick={handleclickstartTraining}>start</button>
+                    <button className='icon-button'><FontAwesomeIcon icon={faTrashCan} className="icon"/></button>
+                    </div>
             </div>
         );
     };
@@ -118,7 +131,7 @@ function Training() {
                         <FontAwesomeIcon icon={faPlus} className="icon" />
                     </button>
 
-                    <button className='icon-button'><span className="text">add new plan</span>
+                    <button onClick={addPlan} className='icon-button'><span className="text">add new plan</span>
                         <FontAwesomeIcon icon={faPlus} className="icon" />
                     </button>
 
@@ -162,6 +175,10 @@ function Training() {
                         <PlanList plans={plans} />
 
                     </div>
+
+                    <AddPlanPopup
+                        show={showAddPlanPopup}
+                    />
                     <br />
                     <br />
                     <br />
