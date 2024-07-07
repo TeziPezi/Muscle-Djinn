@@ -12,7 +12,7 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        axios.get('http://localhost:8081/logged')
+        axios.get(`${process.env.REACT_APP_API_URL}/logged`)
             .then(response => {
                 if (response.data.loginValue) {
                     this.setState({ auth: true });

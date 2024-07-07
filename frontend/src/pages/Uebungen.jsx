@@ -12,7 +12,7 @@ const Uebungen = () => {
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        axios.get('http://localhost:8081/logged')
+        axios.get(`${process.env.REACT_APP_API_URL}/logged`)
             .then(res => {
                 if (res.data.loginValue) {
                     setAuth(true);
@@ -28,7 +28,7 @@ const Uebungen = () => {
 
     const uebungErstellen = () => {
         console.log("Sending User ID:", userID); // Log userID during post request
-        axios.post("http://localhost:8081/uebung_erstellen", {
+        axios.post(`${process.env.REACT_APP_API_URL}/uebung_erstellen`, {
             bezeichnung,
             muskelgruppe,
             beschreibung,

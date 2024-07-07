@@ -32,7 +32,7 @@ const EditPopup = ({ show, handleClose, username, email, userID }) => {
     const handleSave = (e) => {
         e.preventDefault();
         if (formData.password === formData.confirmPassword) {
-            axios.post('http://localhost:8081/updateUser', formData)
+            axios.post(`${process.env.REACT_APP_API_URL}/updateUser`, formData)
                 .then(res => {
                     handleClose();
                     window.location.reload();

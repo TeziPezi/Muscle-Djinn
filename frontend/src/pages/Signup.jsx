@@ -14,7 +14,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const register = () => {
-        axios.post("http://localhost:8081/register", {
+        axios.post(`${process.env.REACT_APP_API_URL}/register`, {
             Username: usernameReg,
             E_mail: E_mailReg,
             Password: passwordReg

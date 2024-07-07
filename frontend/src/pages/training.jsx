@@ -24,7 +24,7 @@ function Training() {
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        axios.get('http://localhost:8081/logged')
+        axios.get(`${process.env.REACT_APP_API_URL}/logged`)
             .then(res => {
                 if (res.data.loginValue) {
                     setAuth(true)
@@ -43,7 +43,7 @@ function Training() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8081/Ubung');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/Ubung`);
                 setUbung(response.data);
             } catch (error) {
                 console.error('Error fetching the data', error);
@@ -55,7 +55,7 @@ function Training() {
 
 
     const getPlanData = (userID) => {
-        axios.get(`http://localhost:8081/plan/${userID}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/plan/${userID}`)
             .then(res => {
                 setPlans(res.data);
 
@@ -121,7 +121,6 @@ function Training() {
 
 
     return (
-        auth ? (
             <div className='headPosition'>
                 <div className='container'>
                     The Trainingpage.<br /><br />
@@ -186,16 +185,8 @@ function Training() {
                 </div>
             </div>
 
-        ) : (
-            <div className='headPosition'>
-                <div className='container'>
-                    The Trainingpage.<br /><br />
-
-                </div>
-            </div>
-        )
-    )
-};
+      
+)};
 
 export default Training;
 

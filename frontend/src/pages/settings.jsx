@@ -4,6 +4,8 @@ import '../styles.css';
 import axios from 'axios'
 
 
+
+
 function Settings() {
 
     const [auth, setAuth] = useState(false); // hier false
@@ -16,7 +18,7 @@ function Settings() {
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        axios.get('http://localhost:8081/logged')
+        axios.get(`${process.env.REACT_APP_API_URL}/logged`)
             .then(res => {
                 if (res.data.loginValue) {
                     setAuth(true)
@@ -32,7 +34,7 @@ function Settings() {
     }, [])
 
     const handleDelete = () => {
-        axios.get('http://localhost:8081/logout')
+        axios.get(`${process.env.REACT_APP_API_URL}/logout`)
             .then(res => {
                 window.location.reload();
             })

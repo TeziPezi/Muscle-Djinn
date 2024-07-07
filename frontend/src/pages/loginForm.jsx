@@ -18,7 +18,7 @@ function Login() {
     // Senden der User Login-Daten für die Überprüfung
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8081/loginForm', {
+        axios.post(`${process.env.REACT_APP_API_URL}/loginForm`, {
             loginUsername: loginValues.loginUsername,
             loginPassword: loginValues.loginPassword
         })

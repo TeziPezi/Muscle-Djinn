@@ -19,7 +19,7 @@ class MonthlyCalendar extends Component {
 
     fetchTrainingDates = async () => {
         try {
-            const response = await axios.get('http://localhost:8081/trainingDates', { withCredentials: true });
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/trainingDates`, { withCredentials: true });
             const trainingDates = response.data.map(entry => new Date(entry.Datum).toISOString().split('T')[0]);  
             this.setState({ trainingDates });
         } catch (error) {
@@ -30,7 +30,7 @@ class MonthlyCalendar extends Component {
     fetchTrainingByDate = async (date) => {
         try {
             const formattedDate = date.toISOString().split('T')[0];
-            const response = await axios.get('http://localhost:8081/trainingByDate', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/trainingByDate`, {
                 params: { date: formattedDate },
                 withCredentials: true
             });
