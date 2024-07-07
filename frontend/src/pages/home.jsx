@@ -32,6 +32,10 @@ class Home extends Component {
         this.props.navigate('/Signup');
     }
 
+    handleGuestClick = () => {
+        this.props.navigate('/');
+    }
+
     render() {
         const { auth } = this.state;
 
@@ -51,6 +55,8 @@ class Home extends Component {
                             <button type="button" className="Button" onClick={this.handleLoginClick}>Login</button>
                             <br /><br />
                             <button type="button" className="Button" onClick={this.handleRegisterClick}>Register</button>
+                            <br /><br />
+                            <button type="button" className="Button" onClick={this.handleGuestClick}>Als Gast fortfahren</button>
                         </div>
                     </div>
 

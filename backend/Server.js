@@ -55,6 +55,44 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+// Kalender-Komponente -> Datenbankabruf für Marker
+app.get('/trainingDates', verifyUser, async (req, res) => {
+    try {
+        const sql = "SELECT Datum FROM Kalender WHERE UserID = (SELECT UserID FROM Nutzer WHERE Username = ?)";
+        const [results] = await promisePool.query(sql, [req.username]);
+        res.json(results);
+    } catch (err) {
+        console.error('Error retrieving training data:', err);
+        res.status(500).send('Server Error');
+    }
+});
+// Kalender-Komponente -> Trainingsplan nach Datum (+1 Tag, wegen Dateninkonsistenz)
+app.get('/trainingByDate', verifyUser, async (req, res) => {
+    let { date } = req.query;
+    try {
+        // Datum um einen Tag erhöhen
+        let selectedDate = new Date(date);
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        let adjustedDate = selectedDate.toISOString().split('T')[0];
+
+        const sql = `
+            SELECT p.Bezeichnung, k.Datum
+            FROM Kalender k
+            JOIN Plan p ON k.PlanID = p.PlanID
+            WHERE k.UserID = (SELECT UserID FROM Nutzer WHERE Username = ?)
+            AND k.Datum = ?
+        `;
+        const [results] = await promisePool.query(sql, [req.username, adjustedDate]);
+        if (results.length > 0) {
+            res.json({ training: results[0].Bezeichnung });
+        } else {
+            res.json({ training: 'No training on this day' });
+        }
+    } catch (err) {
+        console.error('Error retrieving training for the date:', err);
+        res.status(500).send('Server Error');
+    }
+});
 
 // User registration
 app.post("/register", async (req, res) => {
