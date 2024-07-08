@@ -40,7 +40,6 @@ function Home() {
     const getPlanData = (userID) => {
         axios.get(`${process.env.REACT_APP_API_URL}/plan/${userID}`)
             .then(res => {
-                console.log(res.data.allExercises)
                 setPlans(res.data.plans);
                 setAllExercises(res.data.allExercises);
 
@@ -54,15 +53,23 @@ function Home() {
 
     const handleClosePopup = () => {
         setShowAddPlanPopup(false);
+        window.location.reload();
     };
 
     const handleclickStartTraining = () => {
 
     };
 
-    const handleclickDelete= () => {
-
-    }
+    const handleclickDelete= (planID) => {
+        axios.get(`${process.env.REACT_APP_API_URL}/deletePlan/${planID}`)
+            .then(res =>{
+                window.location.reload();
+            }       
+            )
+            .catch(err => {
+                console.error("Error deleting plan:", err);
+            });
+    };
 
     const Exercise = ({ exercise }) => {
         return <li>{exercise.UbungBezeichnung}</li>;
@@ -82,7 +89,7 @@ function Home() {
                 </ul>
                 <div>
                     <button type="button" className='Button' onClick={handleclickStartTraining}>start</button>
-                    <button className='icon-button' onClick={handleclickDelete}><FontAwesomeIcon icon={faTrashCan} className="icon" /></button>
+                    <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}><FontAwesomeIcon icon={faTrashCan} className="icon" /></button>
                 </div>
             </div>
         );
@@ -121,6 +128,7 @@ function Home() {
                     show={showAddPlanPopup}
                     handleClose={handleClosePopup}
                     allExercises={allExercises}
+                    userID={userID}
                 />
                 <br />
                 <br />

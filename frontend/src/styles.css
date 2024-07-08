@@ -205,6 +205,7 @@ button:hover {
     border-radius: 8px;
     max-width: 400px;
     width: 100%;
+    
 }
 
 .popup-inner form {
@@ -249,8 +250,20 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
-/*Das Aussehen für editPopup*/
 
+.dropdown {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 10px;
+  margin-right: 15%;
+  margin-left: 15%;
+  
+}
+
+.dropdown option {
+  width: 80%;
+}
 /*Das Aussehen für Trainigsplan*/
 
 

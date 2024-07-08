@@ -244,7 +244,7 @@ app.get('/plan/:userID', (req, res) => {
         WHERE Plan.UserID = ?
   `;
 
-    const sql2 = 'SELECT bezeichnung, muskelgruppe, beschreibung FROM Ubung WHERE UserID = ?'
+    const sql2 = 'SELECT ubungID, bezeichnung, muskelgruppe, beschreibung FROM Ubung WHERE UserID = ?'
 
     pool.query(sql1, [userID], (err, plans) => {
         if (err) {
@@ -263,6 +263,60 @@ app.get('/plan/:userID', (req, res) => {
     })
 });
 
+app.post('/createPlan', (req, res) => {
+    const sql1 = 'INSERT INTO Plan (Bezeichnung, Beschreibung, UserID) VALUES (?, ?, ?)';
+
+    const sql2 = 'SELECT PlanID FROM Plan WHERE Bezeichnung = ? AND Beschreibung = ? AND UserID = ?';
+
+    const bezeichnung = req.body.bezeichnung;
+    const beschreibung = req.body.beschreibung;
+    const userID = req.body.userID;
+
+
+    pool.query(sql1, [bezeichnung, beschreibung, userID], (err, response) => {
+        if (err) {
+            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+        }
+        pool.query(sql2, [bezeichnung, beschreibung, userID], (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: 'Fehler beim suchen der PlanID' });
+            }
+            
+            return res.json({planID: results[0].PlanID});
+        })
+    })
+})
+
+app.post('/plan_ubung', (req, res) => {
+    const sql = 'INSERT INTO Plan_Ubung (PlanID, UbungID, UserID) VALUES (?, ?, ?)'
+
+    pool.query(sql, [req.body.planID, req.body.ubungID, req.body.userID], (err, response) => {
+        if (err){
+            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+        }
+        return;
+    })
+})
+
+app.get('/deletePlan/:planID', (req, res) => {
+    const sql1 = 'DELETE FROM Plan_Ubung WHERE PlanID = ?'
+    const sql2 = 'DELETE FROM Plan WHERE PlanID = ?'
+
+    const planID = req.params.planID;
+
+    pool.query(sql1, [planID], (err, response) => {
+        if (err) {
+            return res.status(500).json({ error: 'Fehler beim Löschen des Plans' })
+        }
+        pool.query(sql2, [planID], (err, response2) => {
+            if (err) {
+                return res.status(500).json({ error: 'Fehler beim Löschen des Plans' })
+            }
+        })
+        return res.json({message: "Plan erfolgreich gelöscht"});
+    })
+
+})
 
 
 // hier wird der User Ausgeloggt
