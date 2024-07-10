@@ -14,7 +14,6 @@ import Login from './pages/loginForm';
 import Signup from './pages/Signup';
 import Uebungen from './pages/Uebungen';
 import Emailsuchen from './component/E-Mail/email';
-import Code from './component/E-Mail/code';
 import PasswordReset from './component/E-Mail/password';
 
 
@@ -37,7 +36,6 @@ function App() {
                     <Route path="/uebungen" element={<Uebungen/>} />
                     <Route path="/PasswordReset" element={<PasswordReset/>} />
                     <Route path="/Emailsuchen" element={<Emailsuchen/>} />
-                    <Route path="/Code" element={<Code/>} />
                     <Route path="*" element={<NoPage/>} />
                 </Routes>
             </React.Fragment>
