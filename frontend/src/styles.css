@@ -514,9 +514,3 @@ button:hover {
 .esc_klick::before {
   content: '✖'; /* Unicode für das X */
 }
-
-
-
-
-
-
