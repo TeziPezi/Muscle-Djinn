@@ -1,0 +1,25 @@
+.centered-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-results {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px; /* Setze eine maximale Höhe, damit die Liste nicht zu lang wird */
+    overflow-y: auto; /* Ermöglicht das Scrollen, wenn die Liste zu lang ist */
+    border: 1px solid #ccc; /* Eine leichte Umrandung um die Ergebnisse */
+    border-top: none; /* Entferne die obere Umrandung, um sie mit dem Eingabefeld zu verbinden */
+    background-color: #fff; /* Setze einen weißen Hintergrund für die Ergebnisse */
+}
+
+.search-results li {
+    padding: 8px; /* Setze etwas Abstand um die Listenelemente */
+    cursor: pointer; /* Ändere den Cursor, um anzuzeigen, dass die Elemente klickbar sind */
+}
+
+.search-results li:hover {
+    background-color: #f0f0f0; /* Ändere die Hintergrundfarbe beim Überfahren mit der Maus */
+}

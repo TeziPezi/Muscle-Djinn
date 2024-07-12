@@ -54,7 +54,7 @@ const verifyUser = (req, res, next) => {
         })
     }
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Kalender-Komponente -> Datenbankabruf für Marker
 app.get('/trainingDates', verifyUser, async (req, res) => {
     try {
@@ -93,6 +93,51 @@ app.get('/trainingByDate', verifyUser, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Suche nach Benutzer, die Trainingspläne erstellt haben
+app.get('/searchUser', async (req, res) => {
+    const { username } = req.query;
+    const sql = `
+        SELECT DISTINCT Nutzer.UserID, Nutzer.Username 
+        FROM Nutzer 
+        JOIN Plan ON Nutzer.UserID = Plan.UserID 
+        WHERE Nutzer.Username LIKE ?
+    `;
+    try {
+        const [results] = await promisePool.query(sql, [`%${username}%`]);
+        res.json(results);
+    } catch (err) {
+        console.error('Error searching user:', err);
+        res.status(500).send('Server Error');
+    }
+});
+// Importiere Pläne
+app.post('/importPlans', async (req, res) => {
+    const { sourceUserID, targetUserID } = req.body;
+    const sqlGetPlans = 'SELECT PlanID, Bezeichnung, Beschreibung FROM Plan WHERE UserID = ?';
+    const sqlInsertPlan = 'INSERT INTO Plan (Bezeichnung, Beschreibung, UserID) VALUES (?, ?, ?)';
+    const sqlGetExercises = 'SELECT UbungID FROM Plan_Ubung WHERE PlanID = ?';
+    const sqlInsertPlanExercise = 'INSERT INTO Plan_Ubung (PlanID, UbungID, UserID) VALUES (?, ?, ?)';
+
+    try {
+        const [plans] = await promisePool.query(sqlGetPlans, [sourceUserID]);
+
+        for (const plan of plans) {
+            const [insertResult] = await promisePool.query(sqlInsertPlan, [plan.Bezeichnung, plan.Beschreibung, targetUserID]);
+            const newPlanID = insertResult.insertId;
+
+            const [exercises] = await promisePool.query(sqlGetExercises, [plan.PlanID]);
+            for (const exercise of exercises) {
+                await promisePool.query(sqlInsertPlanExercise, [newPlanID, exercise.UbungID, targetUserID]);
+            }
+        }
+        res.json({ message: 'Plans imported successfully' });
+    } catch (err) {
+        console.error('Error importing plans:', err);
+        res.status(500).send('Server Error');
+    }
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // User registration
 app.post("/register", async (req, res) => {
