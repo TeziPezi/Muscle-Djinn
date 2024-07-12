@@ -483,3 +483,36 @@ button:hover {
 .knopf:hover {
   background-color: #cc0000;
 }
+
+.notification {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background-color: #333;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+.notification p {
+  margin: 0;
+  padding-right: 1px; /* Platz für den Button */
+}
+
+.close-btn {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background: none;
+  border: none;
+  color: #ff0000;
+  font-size: 0.8em;
+  cursor: pointer;
+  padding: 1px; /* Kleinere Hitbox */
+}
+
+
