@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles.css';
 
 const ImportPlanPopup = ({ show, handleClose, userID }) => {
     const [username, setUsername] = useState('');
@@ -40,8 +39,8 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
     return (
         <div className={`popup ${show ? 'show' : ''}`}>
             <div className="popup-inner">
-                <h2>User Name</h2>
-                <form onSubmit={handleSearch} className="centered-button">
+                <h2>Import Plan from</h2>
+                <form onSubmit={handleSearch}>
                     <input
                         type="text"
                         value={username}
@@ -52,7 +51,7 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
                     <button type="submit" className="Button">Search</button>
                 </form>
                 {searchResults.length > 0 && (
-                    <ul className="search-results">
+                    <ul>
                         {searchResults.map((user) => (
                             <li key={user.UserID} onClick={() => handleSelectUser(user)}>
                                 {user.Username}
@@ -61,11 +60,11 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
                     </ul>
                 )}
                 {selectedUser && (
-                    <div className="centered-button">
+                    <div>
                         <button type="button" className="Button" onClick={handleImportPlans}>Import now</button>
                     </div>
                 )}
-                <div className="centered-button">
+                <div>
                     <button type="button" className="Button" onClick={handleClose}>Close</button>
                 </div>
             </div>
