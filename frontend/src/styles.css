@@ -378,9 +378,9 @@ button:hover {
 }
 
 .close-button {
-  position: absolute; /* Positioniert den Button relativ zum Modal */
-  top: 10px; /* Abstand von oben */
-  right: 10px; /* Abstand von rechts */
+  position: fixed; /* Positioniert den Button relativ zum Modal */
+  top: 140px; /* Abstand von oben */
+  right: 530px; /* Abstand von rechts */
   background-color: #444; /* Dunkelgrauer Hintergrund */
   color: gray; /* Graue Schriftfarbe */
   border: none; /* Kein Rahmen */
@@ -486,7 +486,7 @@ button:hover {
 
 .notification {
   position: fixed;
-  top: 15px;
+  top: 50px;
   right: 15px;
   background-color: #333;
   color: #ffffff;
@@ -497,22 +497,29 @@ button:hover {
   align-items: flex-start;
   z-index: 1000;
 }
-
-.notification p {
-  margin: 0;
-  padding-right: 1px; /* Platz für den Button */
+.esc_klick {
+  position: fixed; /* Positioniert den Button relativ zum Modal */
+  top: 35px; /* Abstand von oben */
+  right: 5px; /* Abstand von rechts */
+  background-color: #444; /* Dunkelgrauer Hintergrund */
+  color: gray; /* Graue Schriftfarbe */
+  border: none; /* Kein Rahmen */
+  border-radius: 50%; /* Runde Ecken */
+  width: 30px; /* Breite des Buttons */
+  height: 30px; /* Höhe des Buttons */
+  cursor: pointer; /* Mauszeiger wird zur Hand */
+  font-size: 16px; /* Schriftgröße */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.close-btn {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  background: none;
-  border: none;
-  color: #ff0000;
-  font-size: 0.8em;
-  cursor: pointer;
-  padding: 1px; /* Kleinere Hitbox */
+.esc_klick:hover {
+  background-color: #555; /* Etwas helleres Grau bei Hover */
+  color: white; /* Weißes X bei Hover */
 }
 
-
+/* Für das X-Icon im Button */
+.esc_klick::before {
+  content: '✖'; /* Unicode für das X */
+}

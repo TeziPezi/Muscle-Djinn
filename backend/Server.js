@@ -188,7 +188,7 @@ app.post("/uebung_erstellen", (req, res) => {
 });
 
 app.get('/Ubung', (req, res) => {
-    pool.query('SELECT bezeichnung, muskelgruppe, beschreibung FROM Ubung', (err, results) => {
+    pool.query('SELECT bezeichnung, muskelgruppe, beschreibung ,UserID FROM Ubung', (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {

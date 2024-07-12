@@ -42,13 +42,16 @@ function Training() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/Ubung`);
-                setUbung(response.data);
+                // Filtern der Daten nach userID
+                const filteredData = response.data.filter(ubung => ubung.UserID === userID);
+                setUbung(filteredData);
             } catch (error) {
                 console.error('Error fetching the data', error);
             }
         };
         fetchData();
-    }, []);
+    }, [userID]);  // `userID` als Abhängigkeit hinzufügen, um bei Änderungen neue Daten zu holen
+    
 
     return (
             <div className='headPosition'>
