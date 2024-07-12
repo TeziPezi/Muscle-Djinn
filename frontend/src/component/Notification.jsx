@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
 
 const Notification = ({ message, onClose }) => {
@@ -19,10 +17,10 @@ const Notification = ({ message, onClose }) => {
 
   return (
     <div className="notification">
-      <p>{message}</p>
-      <button className="close-btn" onClick={handleClose}>
-        <FontAwesomeIcon icon={faTimes} />
+      <button className="esc_klick" onClick={handleClose}>
+    
       </button>
+      <p>{message}</p>
     </div>
   );
 };

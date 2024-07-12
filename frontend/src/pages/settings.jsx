@@ -88,7 +88,7 @@ function Settings() {
                 {showNotification && (
                     <Notification
                         message="Als Gast werden Daten nur temporär gespeichert"
-                        onClose={() => setShowNotification(false)}
+                         onClose={() => setShowNotification(false)}
                     />
                 )}
                 <EditPopup
