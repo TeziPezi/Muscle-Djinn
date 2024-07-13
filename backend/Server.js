@@ -5,6 +5,8 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+const moment = require('moment-timezone');
 
 dotenv.config({ path: './.env' });
 
@@ -12,7 +14,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.CONNECTION],
     methods: ["Post", "GET"],
     credentials: true
 }
@@ -363,6 +365,143 @@ app.get('/deletePlan/:planID', (req, res) => {
 
 })
 
+app.post('/EMailCode', (req, res) => {
+    const { EMail } = req.body;
+
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.strato.de',
+        port: 465,
+        secure: true,
+        auth: {
+            user: "no-reply@muscledjinn.de",
+            pass: "4uHIlS7a6H"
+        }
+    });
+
+    pool.query('SELECT UserID, Username FROM Nutzer WHERE E_Mail = ?', [EMail], (error, results) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+      
+        if (results.length === 0) {
+          return res.json({ status: false, message: 'Keine E-Mail-Adresse gefunden.' });
+        }
+      
+        const user = results[0];
+
+        const id = user.UserID;
+        const name = user.Username;
+        var uniq;
+        var code;
+        
+        pool.query('SELECT Code FROM Code', [code], (error, results)  => {
+            if (error) {
+              console.error(error);
+              return;
+            }
+
+            while(!uniq) {
+                const characters = '123456789';
+                code = '';
+                const charactersLength = characters.length;
+                for (let i = 0; i < 6; i++) {
+                  code += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                if (results.length === 0) {
+                    uniq = true;
+                } else {
+                    for (let i = 0; i < results.length; i++){
+                        if(results[i] !== code){
+                            uniq = true;
+                        };
+                    }
+                }
+            }
+
+            pool.query('INSERT INTO Code (Code, UserID, Gültig) VALUES (?, ?, NOW() + INTERVAL 10 MINUTE)', [code, id]);
+            const text = 'um Ihr Passwort für MuscleDjinn zurückzusetzen, verwenden Sie bitte folgenden Code: ' + code;
+
+            const mailOptions = {
+                from: "no-reply@muscledjinn.de",
+                to: EMail,
+                subject: 'Password zurücksetzten',
+                text: 'Hallo '+user.Username+',\n\n'+text+'\n\nDer Code ist 10min gültig\n\nViele Grüße,\nDein Team\nMuscleDjinn',
+                html: '<p>Hallo '+user.Username+',</p><p>'+text+'</p><p>Der Code ist 10min gültig</p><p>Viele Grüße,<br>Dein Team<br>MuscleDjinn</p>'
+            };
+            
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.error(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+            });
+        });
+        return res.json({ status: true});;
+    });
+});
+
+function pad(number) {
+    return number < 10 ? '0' + number : number;
+}
+
+let Gueltig = true;
+
+app.post('/PasswordReset', (req, res) => {
+    const { Code, Password1 } = req.body;
+
+    pool.query('SELECT Code, UserID, Gültig, Benutzt FROM Code WHERE Code = ?', [Code], async (error, results) => {
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        if (results.length === 0) {
+            console.log('Code nicht gefunden.');
+            return;
+        }
+    
+        const dateTimeString = String(results[0].Gültig);
+    
+        const dateTimeInDB = moment(dateTimeString).format('YYYY-MM-DD HH:mm:ss');
+    
+        const now = moment();
+        
+        if (moment(dateTimeInDB).isSameOrAfter(now)) {
+            Gueltig = false;
+        } else {
+            return res.json({ status: false, message: 'Code Abgelaufen' });
+        }
+
+        if (results[0].Benutzt === 0 && Gueltig === false) {
+            try {
+                const passwordString = String(Password1);
+    
+                const hashedPassword = await bcrypt.hash(passwordString, 10);
+
+                pool.query('UPDATE Nutzer SET Password = ? WHERE UserID = ?', [hashedPassword, results[0].UserID], (err, result) => {
+                    if (err) {
+                        console.error('Fehler beim Einfügen der Daten:', err);
+                        return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                    }
+                    pool.query('UPDATE Code SET Benutzt = true WHERE Code = ?;', [results[0].Code], (err, result) => {
+                        if (err) {
+                            console.error('Fehler beim Einfügen der Daten:', err);
+                            return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                        }
+                        return res.status(200).json({ status: true, message: 'Registrierung erfolgreich' });
+                    });
+                });
+            } catch (err) {
+                console.error('Fehler beim Hashen des Passworts:', err);
+                res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
+            }
+        } else if (results[0].Benutzt === 1) {
+            return res.status(200).json({ status: false, message: 'Code schon benutzt' });
+        } 
+    });
+});
 
 // hier wird der User Ausgeloggt
 app.get('/logout', (req, res) => {
