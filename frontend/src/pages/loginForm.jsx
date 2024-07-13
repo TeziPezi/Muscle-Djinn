@@ -53,7 +53,7 @@ function Login() {
                         </div>
                         <div className="remember-forgot">
                             <label><input type="checkbox" />Remember me</label>
-                            <a href="/"> Forgot passwort?</a>
+                            <a href="/EmailtoCode"> Forgot passwort?</a>
                         </div>
 
                         <button className="Button" type='submit'>Login</button>
