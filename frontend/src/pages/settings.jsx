@@ -62,15 +62,29 @@ function Settings() {
     };
 
     return (
-        <div className='headPosition'>
-            <div className='container'>
-                {auth ? (
-                    <div>
+                auth ? (
+                    <div className='headPosition'>
+                        <div className='container'>
                         <h3 style={{ color: "white" }}>Welcome back {username}!</h3>
                         <br />
                         <button type="button" className='Button' onClick={handleEdit}>Edit Profile</button>
                         <br /><br />
                         <button type="button" className="Button" onClick={handleDelete}>Logout</button>
+                        {showNotification && (
+                    <Notification
+                        message="Als Gast werden Daten nur temporär gespeichert"
+                        onClose={() => setShowNotification(false)}
+                    />
+                )}
+                <EditPopup
+                    show={showPopup}
+                    handleClose={handleClosePopup}
+                    username={username}
+                    email={email}
+                    userID={userID}
+                />
+                        </div>
+                        
                     </div>
                 ) : (
                     <div className="headPosition">
@@ -84,22 +98,8 @@ function Settings() {
                             <button type="button" className="Button" onClick={handleGuestClick}>Als Gast fortfahren</button>
                         </div>
                     </div>
-                )}
-                {showNotification && (
-                    <Notification
-                        message="Als Gast werden Daten nur temporär gespeichert"
-                        onClose={() => setShowNotification(false)}
-                    />
-                )}
-                <EditPopup
-                    show={showPopup}
-                    handleClose={handleClosePopup}
-                    username={username}
-                    email={email}
-                    userID={userID}
-                />
-            </div>
-        </div>
+                )
+                
     );
 }
 

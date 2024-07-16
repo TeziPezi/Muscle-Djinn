@@ -56,6 +56,22 @@ const verifyUser = (req, res, next) => {
         })
     }
 }
+
+// Überprüfung ob der User eingeloggt ist
+app.get('/logged', verifyUser, async (req, res) => {
+
+    const sql = "SELECT UserID FROM Nutzer WHERE Username = ?";
+
+    pool.query(sql, [req.username], (err, results) => {
+        if (err) {
+            return res.json({ error: 'Fehler beim Lesen der UserID' })
+        }
+        return res.json({ loginValue: true, username: req.username, userID: results[0].UserID })
+    })
+
+
+})
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Kalender-Komponente -> Datenbankabruf für Marker
 app.get('/trainingDates', verifyUser, async (req, res) => {
@@ -200,22 +216,6 @@ app.get('/Ubung', (req, res) => {
 });
 
 
-
-// Überprüfung ob der User eingeloggt ist
-app.get('/logged', verifyUser, async (req, res) => {
-
-    const sql = "SELECT UserID FROM Nutzer WHERE Username = ?";
-
-    pool.query(sql, [req.username], (err, results) => {
-        if (err) {
-            return res.json({ error: 'Fehler beim Lesen der UserID' })
-        }
-        return res.json({ loginValue: true, username: req.username, userID: results[0].UserID })
-    })
-
-
-})
-
 // hier wird User authentifiziert und ein Json Web Token in Cookie erstellt
 app.post('/loginForm', async (req, res) => {
 
@@ -310,6 +310,7 @@ app.get('/plan/:userID', (req, res) => {
     })
 });
 
+// hier wird Plan erstellt
 app.post('/createPlan', (req, res) => {
     const sql1 = 'INSERT INTO Plan (Bezeichnung, Beschreibung, UserID) VALUES (?, ?, ?)';
 
@@ -334,6 +335,7 @@ app.post('/createPlan', (req, res) => {
     })
 })
 
+// hier werden die Übungen dem Plan zugeordnet
 app.post('/plan_ubung', (req, res) => {
     const sql = 'INSERT INTO Plan_Ubung (PlanID, UbungID, UserID) VALUES (?, ?, ?)'
 
@@ -345,6 +347,7 @@ app.post('/plan_ubung', (req, res) => {
     })
 })
 
+// hier wird der Plan Schrittweise gelöscht
 app.get('/deletePlan/:planID', (req, res) => {
     const sql1 = 'DELETE FROM Plan_Ubung WHERE PlanID = ?'
     const sql2 = 'DELETE FROM Plan WHERE PlanID = ?'

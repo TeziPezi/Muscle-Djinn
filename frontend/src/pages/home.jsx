@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -12,15 +11,12 @@ function Home() {
 
     const [auth, setAuth] = useState(false); // hier false
     const [userID, setUserID] = useState('');
-    const [username, setUsername] = useState('');
     const [plans, setPlans] = useState([]);
     const [allExercises, setAllExercises] = useState([]);
     const [showAddPlanPopup, setShowAddPlanPopup] = useState(false);
     const [showImportPlanPopup, setShowImportPlanPopup] = useState(false); // Zustand für Import Plan Popup
 
     axios.defaults.withCredentials = true;
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/logged`)
@@ -95,9 +91,15 @@ function Home() {
                         <Exercise key={index} exercise={exercise} />
                     ))}
                 </ul>
+                <div className='Plan-Description'>
+                    {plan.PlanBeschreibung}
+                </div>
                 <div>
                     <button type="button" className='Button' onClick={handleclickStartTraining}>start</button>
-                    <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}><FontAwesomeIcon icon={faTrashCan} className="icon" /></button>
+                    <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
+                        <span className="text">Delete</span>
+                        <FontAwesomeIcon icon={faTrashCan} className="icon" />
+                        </button>
                 </div>
             </div>
         );
@@ -121,6 +123,7 @@ function Home() {
     return (
         <div className='headPosition'>
             <div className='container'>
+                <div className='next'>
                 <button onClick={addPlan} className='icon-button'>
                     <span className="text">Add New Plan</span>
                     <FontAwesomeIcon icon={faPlus} className="icon" />
@@ -129,8 +132,11 @@ function Home() {
                     <span className="text">Import Plan</span>
                     <FontAwesomeIcon icon={faPlus} className="icon" />
                 </button>
+                </div>
+                
                 <div className='Plan-Wrapper'>
                     <h2>My training plans</h2>
+                    <br />
                     <PlanList plans={plans} />
                 </div>
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import '../styles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const EditPopup = ({ show, handleClose, username, email, userID }) => {
     const [formData, setFormData] = useState({
@@ -47,53 +49,56 @@ const EditPopup = ({ show, handleClose, username, email, userID }) => {
     return (
         <div className={`popup ${show ? 'show' : ''}`}>
             <div className="popup-inner">
+                <div className="popup-head">
+                    <div></div>
+                    <button type="button" className="Close-Button" onClick={handleClose}><FontAwesomeIcon icon={faXmark} /></button>
+                </div>
                 <h2>Edit Personal Info</h2>
                 <form onSubmit={handleSave}>
                     <label>
                         Username:
-                       
+
                     </label>
                     <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                        />
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                    />
                     <label>
                         Email:
                     </label>
                     <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
                     <label>
                         Password:
                     </label>
                     <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
                     <label>
                         repeat Password:
-                        
+
                     </label>
                     <input
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            required
-                        />
-                    <div>
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                    />
+                    <div style={{display: "flex", justifyContent: "space-around"}}>
                         <button type="submit" className='Button'>Save</button>
-                        <button type="button" className='Button' onClick={handleClose}>Close</button>
                     </div>
                 </form>
             </div>

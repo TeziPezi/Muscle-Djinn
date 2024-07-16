@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
 import Uebungen from './Uebungen';
-import EditPopup from '../component/addPlanPopup';
 import axios from 'axios';
-import AddPlanPopup from '../component/addPlanPopup';
 
 function Training() {
 
     const [auth, setAuth] = useState(false); // hier false
     const [userID, setUserID] = useState('');
     const [visible, setVisible] = useState(false);
-    const [showAddPlanPopup, setShowAddPlanPopup] = useState(false);
     const [Ubung, setUbung] = useState([]);
 
-    const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
 
@@ -56,14 +50,12 @@ function Training() {
     return (
             <div className='headPosition'>
                 <div className='container'>
-                    The Trainingpage.<br /><br />
-
+                    <div className='next'>
                     <button onClick={() => setVisible(true)} className="icon-button">
                         <span className="text">Add</span>
                         <FontAwesomeIcon icon={faPlus} className="icon" />
                     </button>
-
-
+                    </div>
                     <div className="table-container">
                         <h1>Alle Übungen</h1>
                         <table className="table">

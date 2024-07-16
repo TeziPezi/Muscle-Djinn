@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import '../styles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const AddPlanPopup = ({ show, handleClose, allExercises, userID }) => {
     const [exercises, setExercises] = useState([{ id: 1, exerciseID: '' }]);
@@ -49,6 +51,11 @@ const AddPlanPopup = ({ show, handleClose, allExercises, userID }) => {
     return (
         <div className={`popup ${show ? 'show' : ''}`}>
             <div className="popup-inner">
+                <div className="popup-head">
+                    <div></div>
+                    <button type="button" className="Close-Button" onClick={handleClose}><FontAwesomeIcon icon={faXmark} /></button>
+                </div>
+                <h2>Create Plan</h2>
                 <form onSubmit={handleCreatePlan}>
                     <label>Plan Name</label>
                     <input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} required />
@@ -71,7 +78,6 @@ const AddPlanPopup = ({ show, handleClose, allExercises, userID }) => {
                     <div>
                         <button type="button" className="Button" onClick={handleAddExercise}>add exercise</button>
                         <button type="submit" className="Button" >Create Plan</button>
-                        <button type="button" className="Button" onClick={handleClose}>Close</button>
                     </div>
                 </form>
             </div>

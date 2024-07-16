@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const ImportPlanPopup = ({ show, handleClose, userID }) => {
     const [username, setUsername] = useState('');
@@ -39,6 +41,10 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
     return (
         <div className={`popup ${show ? 'show' : ''}`}>
             <div className="popup-inner">
+                <div className="popup-head">
+                    <div></div>
+                    <button type="button" className="Close-Button" onClick={handleClose}><FontAwesomeIcon icon={faXmark} /></button>
+                </div>
                 <h2>Import Plan from</h2>
                 <h6>(only for registered Users)</h6>
                 <form onSubmit={handleSearch}>
@@ -65,9 +71,6 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
                         <button type="button" className="Button" onClick={handleImportPlans}>Import now</button>
                     </div>
                 )}
-                <div>
-                    <button type="button" className="Button" onClick={handleClose}>Close</button>
-                </div>
             </div>
         </div>
     );
