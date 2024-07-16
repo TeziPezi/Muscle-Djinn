@@ -188,7 +188,7 @@ app.post("/uebung_erstellen", (req, res) => {
 });
 
 app.get('/Ubung', (req, res) => {
-    pool.query('SELECT bezeichnung, muskelgruppe, beschreibung ,UserID FROM Ubung', (err, results) => {
+    pool.query('SELECT UbungID, bezeichnung, muskelgruppe, beschreibung ,UserID FROM Ubung', (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -196,6 +196,28 @@ app.get('/Ubung', (req, res) => {
         }
     });
 });
+
+app.get('/loeschen_ubung/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(`Received request to delete Übung with ID: ${id}`); // Debug-Ausgabe
+
+    // SQL-Statement für das Löschen der Übung
+    const sql = 'DELETE FROM Ubung WHERE UbungID = ?';
+
+    pool.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Error executing query', err); // Debug-Ausgabe
+            return res.status(500).json({ error: 'Fehler beim Löschen der Übung' });
+        }
+        if (results.affectedRows === 0) {
+            console.log('No Übung found with this ID'); // Debug-Ausgabe
+            return res.status(404).json({ error: 'Keine Übung mit dieser ID gefunden' });
+        }
+        console.log(`Übung with ID: ${id} deleted successfully`); // Debug-Ausgabe
+        res.json({ message: 'Übung erfolgreich gelöscht' });
+    });
+});
+
 
 
 

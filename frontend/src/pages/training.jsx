@@ -36,8 +36,17 @@ function Training() {
             .catch(err => console.log(err));
     }, [])
 
-
-
+    const deleteUbung = async (id) => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API_URL}/loeschen_ubung/${id}`);
+            console.log(id);
+            setUbung(Ubung.filter(ubung => ubung.UbungID !== id));
+        } catch (error) {
+            console.log(id);
+            console.error('Error deleting the Übung', error);
+        }
+    };
+    
     
 
     useEffect(() => {
@@ -74,6 +83,8 @@ function Training() {
                                     <th>Bezeichnung</th>
                                     <th>Muskelgruppe</th>
                                     <th>Beschreibung</th>
+                                    <th> Nr </th>
+                                    <th>Löschen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,6 +93,12 @@ function Training() {
                                         <td>{ubung.bezeichnung}</td>
                                         <td>{ubung.muskelgruppe}</td>
                                         <td>{ubung.beschreibung}</td>
+                                        <td>{ubung.UbungID}</td>
+                                        <td>
+                                            <button onClick={(handleclickDel) => deleteUbung(ubung.UbungID)} className="icon-button">
+                                             <FontAwesomeIcon icon={faTrashCan} />
+                                             </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
