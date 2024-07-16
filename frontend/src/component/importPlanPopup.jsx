@@ -40,6 +40,7 @@ const ImportPlanPopup = ({ show, handleClose, userID }) => {
         <div className={`popup ${show ? 'show' : ''}`}>
             <div className="popup-inner">
                 <h2>Import Plan from</h2>
+                <h6>(only for registered Users)</h6>
                 <form onSubmit={handleSearch}>
                     <input
                         type="text"

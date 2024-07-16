@@ -122,10 +122,10 @@ function Home() {
         <div className='headPosition'>
             <div className='container'>
                 <button onClick={addPlan} className='icon-button'>
-                    <span className="text">add new plan</span>
+                    <span className="text">Add New Plan</span>
                     <FontAwesomeIcon icon={faPlus} className="icon" />
                 </button>
-                <button onClick={importPlan} className='icon-button'> {/* Neuer Button */}
+                <button onClick={importPlan} className='icon-button'>
                     <span className="text">Import Plan</span>
                     <FontAwesomeIcon icon={faPlus} className="icon" />
                 </button>
