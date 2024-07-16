@@ -6,15 +6,19 @@ import '../styles.css';
 import axios from 'axios';
 import AddPlanPopup from '../component/addPlanPopup';
 import ImportPlanPopup from '../component/importPlanPopup'; // Importiere das neue Popup
+import CurrentPlanPopup from '../component/currentplan';
 
 function Home() {
 
     const [auth, setAuth] = useState(false); // hier false
     const [userID, setUserID] = useState('');
     const [plans, setPlans] = useState([]);
+    const [Currentplan, setcurrentplan] = useState([]);
+    const [PlanID, setPlanID] = useState('');
     const [allExercises, setAllExercises] = useState([]);
     const [showAddPlanPopup, setShowAddPlanPopup] = useState(false);
     const [showImportPlanPopup, setShowImportPlanPopup] = useState(false); // Zustand für Import Plan Popup
+    const [showCurrentPlanPopup, setShowCurrentPlanPopup] = useState(false);
 
     axios.defaults.withCredentials = true;
 
@@ -50,6 +54,12 @@ function Home() {
         setShowImportPlanPopup(true); // Öffne das Import Plan Popup
     };
 
+    const currentPlan = (planID) => {
+        setShowCurrentPlanPopup(true);
+        setPlanID(planID);
+        setcurrentplan(plans.filter(item => item.PlanID === planID));
+    };
+
     const handleCloseAddPlanPopup = () => {
         setShowAddPlanPopup(false);
         window.location.reload();
@@ -60,8 +70,9 @@ function Home() {
         window.location.reload();
     };
 
-    const handleclickStartTraining = () => {
-        
+    const handleCloseCurrentPlanPopup = () => {
+        setShowCurrentPlanPopup(false);
+        window.location.reload();
     };
 
     const handleclickDelete = (planID) => {
@@ -95,7 +106,7 @@ function Home() {
                     {plan.PlanBeschreibung}
                 </div>
                 <div>
-                    <button type="button" className='Button' onClick={handleclickStartTraining}>start</button>
+                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID)}>Anzeige</button>
                     <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
                         <span className="text">Delete</span>
                         <FontAwesomeIcon icon={faTrashCan} className="icon" />
@@ -150,6 +161,13 @@ function Home() {
                     show={showImportPlanPopup} // Hinzufügen des ImportPlanPopup
                     handleClose={handleCloseImportPlanPopup}
                     userID={userID}
+                />
+                <CurrentPlanPopup
+                    show={showCurrentPlanPopup}
+                    handleClose={handleCloseCurrentPlanPopup}
+                    currentplan={Currentplan}
+                    userID={userID}
+                    planID={PlanID}
                 />
                 <br />
                 <br />

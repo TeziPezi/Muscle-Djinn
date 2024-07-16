@@ -506,6 +506,53 @@ app.post('/PasswordReset', (req, res) => {
     });
 });
 
+app.post('/VerlaufAdd', (req, res) => {
+    const { PlanID, UserID, UbungID, Gewicht, Wiederholung } = req.body;
+
+    // Check for required fields
+    if (!PlanID || !UserID || !UbungID || !Gewicht || !Wiederholung) {
+        return res.status(400).json({ error: 'Fehlende erforderliche Felder' });
+    }
+
+    // Insert into the database
+    pool.query(
+        'INSERT INTO Verlauf (PlanID, UserID, UbungID, Gewicht, Wiederholung, Datum) VALUES (?, ?, ?, ?, ?, CURDATE())',
+        [PlanID, UserID, UbungID, Gewicht, Wiederholung],
+        (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+            }
+            res.status(201).json({ message: 'Daten erfolgreich hinzugefügt' });
+        }
+    );
+});
+
+app.post('/KalenderAdd', (req, res) => {
+    const { PlanID, Start, UserID } = req.body;
+    
+    if (!PlanID || !Start || !UserID) {
+        return res.status(400).json({ error: 'Fehlende erforderliche Felder' });
+    }
+
+    // Calculate the duration in minutes
+    const pastDate = new Date(Start);
+    const currentDate = new Date();
+    const diffInMs = currentDate - pastDate;
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+
+    // Insert into the database
+    pool.query(
+        'INSERT INTO Kalender (Datum, PlanID, Dauer, UserID) VALUES (CURDATE(), ?, ?, ?)',
+        [PlanID, diffInMinutes, UserID],
+        (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+            }
+            res.status(201).json({ message: 'Daten erfolgreich hinzugefügt' });
+        }
+    );
+});
+
 // hier wird der User Ausgeloggt
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
