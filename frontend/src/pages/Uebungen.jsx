@@ -34,6 +34,7 @@ const Uebungen = () => {
             beschreibung,
             userID
         }).then((response) => {
+            window.location.reload();
             console.log(response);
         }).catch(err => console.log(err));
     };

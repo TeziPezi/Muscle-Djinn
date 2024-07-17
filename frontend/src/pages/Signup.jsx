@@ -115,7 +115,7 @@ const Signup = () => {
                                 </span>
                             </div>
                         </div>
-                        🔒
+                        
                         <div className='input-box'>
                             <div className='input-icon' style={{ position: 'relative' }}>
                                 <input
@@ -137,7 +137,7 @@ const Signup = () => {
                                         color: '#aaa'
                                     }}
                                 >
-                                    {showPassword ? '🙈' : '👁️'}
+                                    {showPassword ? '🔒' : '👁️'}
                                 </span>
                             </div>
                         </div>
@@ -148,9 +148,7 @@ const Signup = () => {
                         
                         <button className="Button" type="submit">Sign up</button>
                         
-                        <div className='register-link'>
-                            <p>Already have an account? <a href="/loginForm">Login</a></p>
-                        </div>
+                        
                     </form>
                 </div>
             </div>
