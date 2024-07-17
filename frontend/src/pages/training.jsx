@@ -83,18 +83,19 @@ function Training() {
                                     <th>Bezeichnung</th>
                                     <th>Muskelgruppe</th>
                                     <th>Beschreibung</th>
-                                    <th> Nr </th>
+                                    
                                     <th>Löschen</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {Ubung.map((ubung) => (
-                                    <tr key={ubung.bezeichnung}>
+                                    <tr key={ubung.UbungID}>
                                         <td>{ubung.bezeichnung}</td>
                                         <td>{ubung.muskelgruppe}</td>
                                         <td>{ubung.beschreibung}</td>
-                                        <td>{ubung.UbungID}</td>
+                                        
                                         <td>
+                                            
                                             <button onClick={(handleclickDel) => deleteUbung(ubung.UbungID)} className="icon-button">
                                              <FontAwesomeIcon icon={faTrashCan} />
                                              </button>

@@ -352,6 +352,9 @@ button:hover {
   padding: 8px;
   text-align: left;
 }
+.table tr:nth-child(even) {
+  background-color: #111111;
+  }
 
 
 
