@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
 import Uebungen from './Uebungen';
 import axios from 'axios';
@@ -30,6 +31,17 @@ function Training() {
             .catch(err => console.log(err));
     }, [])
 
+    const deleteUbung = async (id) => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API_URL}/loeschen_ubung/${id}`);
+            console.log(id);
+            setUbung(Ubung.filter(ubung => ubung.UbungID !== id));
+        } catch (error) {
+            console.log(id);
+            console.error('Error deleting the Übung', error);
+        }
+    };
+
 
 
     useEffect(() => {
@@ -48,54 +60,58 @@ function Training() {
     
 
     return (
-            <div className='headPosition'>
-                <div className='container'>
-                    <div className='next'>
+        <div className='headPosition'>
+            <div className='container'>
+                <div className='next'>
                     <button onClick={() => setVisible(true)} className="icon-button">
                         <span className="text">Add</span>
                         <FontAwesomeIcon icon={faPlus} className="icon" />
                     </button>
-                    </div>
-                    <div className="table-container">
-                        <h1>Alle Übungen</h1>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>Bezeichnung</th>
-                                    <th>Muskelgruppe</th>
-                                    <th>Beschreibung</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Ubung.map((ubung) => (
-                                    <tr key={ubung.bezeichnung}>
-                                        <td>{ubung.bezeichnung}</td>
-                                        <td>{ubung.muskelgruppe}</td>
-                                        <td>{ubung.beschreibung}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <br />
-                    
-
-                    <Modal
-                        isOpen={visible}
-                        onRequestClose={() => setVisible(false)}
-                        className="modal-content"
-                        overlayClassName="modal-overlay"
-                    >
-                        <Uebungen />
-                        <button onClick={() => setVisible(false)} className="close-button" > </button>
-                    </Modal>
-
-                    <br />
-                    <br />
-                    <br />
-                    <br />
                 </div>
+                <div className="table-con">
+                    <h1>My Exercises</h1>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th style={{width: "10%"}}>Del</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Ubung.map((ubung) => (
+                                <tr key={ubung.UbungID}>
+                                    <td >{ubung.bezeichnung}</td>
+                                    
+                                    <td >
+                                        
+                                        <button style={{width: "38px"}} onClick={(handleclickDel) => deleteUbung(ubung.UbungID)} className="icon-button">
+                                         <FontAwesomeIcon icon={faTrashCan} />
+                                         </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                
+
+                <Modal
+                    isOpen={visible}
+                    onRequestClose={() => setVisible(false)}
+                    className="modal-content"
+                    overlayClassName="modal-overlay"
+                >
+                    <Uebungen />
+                    <button onClick={() => setVisible(false)} className="close-button" > </button>
+                </Modal>
+
+                <br />
+                <br />
+                <br />
+                <br />
             </div>
+        </div>
 
       
 )};

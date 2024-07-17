@@ -162,25 +162,34 @@ app.post("/register", async (req, res) => {
     const { Username, E_mail, Password } = req.body;
 
     try {
-        console.log('Received registration data:', { Username, E_mail, Password });
 
-        // Ensure the password is a string
-        const passwordString = String(Password);
-        console.log('Password as string:', passwordString);
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(passwordString, 10);
-        console.log('Hashed password:', hashedPassword);
-
-        const sql = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
-
-        pool.query(sql, [Username, E_mail, hashedPassword], (err, results) => {
+        // Überprüfen, ob Benutzername oder E-Mail bereits existiert
+        const checkSql = 'SELECT * FROM Nutzer WHERE Username = ? OR E_mail = ?';
+        pool.query(checkSql, [Username, E_mail], async (err, results) => {
             if (err) {
-                console.error('Fehler beim Einfügen der Daten:', err);
-                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                console.error('Fehler beim Überprüfen der Daten:', err);
+                return res.status(500).json({ error: 'Fehler beim Überprüfen der Daten' });
             }
-            console.log('Daten erfolgreich eingefügt:', results);
-            res.status(200).json({ message: 'Registrierung erfolgreich' });
+
+            if (results.length > 0) {
+                return res.status(400).json({ error: 'Benutzername oder E-Mail-Adresse bereits vergeben' });
+            }
+
+            // Sicherstellen, dass das Passwort ein String ist
+            const passwordString = String(Password);
+
+            // Passwort hashen
+            const hashedPassword = await bcrypt.hash(passwordString, 10);
+
+            // Daten in die Datenbank einfügen
+            const insertSql = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
+            pool.query(insertSql, [Username, E_mail, hashedPassword], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Einfügen der Daten:', err);
+                    return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                }
+                res.status(200).json({ message: 'Registrierung erfolgreich' });
+            });
         });
     } catch (err) {
         console.error('Fehler beim Hashen des Passworts:', err);
@@ -188,10 +197,11 @@ app.post("/register", async (req, res) => {
     }
 });
 
+
 // Übung erstellen
 app.post("/uebung_erstellen", (req, res) => {
     const { bezeichnung, muskelgruppe, beschreibung,userID } = req.body;
-    console.log("Request Body:", req.body);
+
     const sql = 'INSERT INTO Ubung (Bezeichnung, Muskelgruppe, Beschreibung,UserID) VALUES (?, ?, ?, ?)';
 
     pool.query(sql, [bezeichnung, muskelgruppe, beschreibung,userID], (err, results) => {
@@ -199,14 +209,13 @@ app.post("/uebung_erstellen", (req, res) => {
             console.error('Fehler beim Einfügen der Daten:', err);
             return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         }
-        console.log('Daten erfolgreich eingefügt:', results);
         
         res.status(200).json({ message: 'Übung erfolgreich erstellt' });
     });
 });
 
 app.get('/Ubung', (req, res) => {
-    pool.query('SELECT bezeichnung, muskelgruppe, beschreibung ,UserID FROM Ubung', (err, results) => {
+    pool.query('SELECT UbungID, bezeichnung, muskelgruppe, beschreibung ,UserID FROM Ubung', (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -215,6 +224,43 @@ app.get('/Ubung', (req, res) => {
     });
 });
 
+app.get('/loeschen_ubung/:id', (req, res) => {
+    const id = req.params.id;
+
+
+    // SQL-Statement für das Löschen der Übung
+    const sql = 'DELETE FROM Ubung WHERE UbungID = ?';
+
+    pool.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Error executing query', err); // Debug-Ausgabe
+            return res.status(500).json({ error: 'Fehler beim Löschen der Übung' });
+        }
+        if (results.affectedRows === 0) {
+
+            return res.status(404).json({ error: 'Keine Übung mit dieser ID gefunden' });
+        }
+        res.json({ message: 'Übung erfolgreich gelöscht' });
+    });
+});
+
+
+
+
+// Überprüfung ob der User eingeloggt ist
+app.get('/logged', verifyUser, async (req, res) => {
+
+    const sql = "SELECT UserID FROM Nutzer WHERE Username = ?";
+
+    pool.query(sql, [req.username], (err, results) => {
+        if (err) {
+            return res.json({ error: 'Fehler beim Lesen der UserID' })
+        }
+        return res.json({ loginValue: true, username: req.username, userID: results[0].UserID })
+    })
+
+
+})
 
 // hier wird User authentifiziert und ein Json Web Token in Cookie erstellt
 app.post('/loginForm', async (req, res) => {
@@ -436,8 +482,6 @@ app.post('/EMailCode', (req, res) => {
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
                   console.error(error);
-                } else {
-                  console.log('Email sent: ' + info.response);
                 }
             });
         });
@@ -461,7 +505,6 @@ app.post('/PasswordReset', (req, res) => {
         }
 
         if (results.length === 0) {
-            console.log('Code nicht gefunden.');
             return;
         }
     

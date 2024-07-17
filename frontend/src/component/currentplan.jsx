@@ -9,8 +9,6 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
     const [selectedUbungBezeichnung, setSelectedUbungBezeichnung] = useState("");
     const [sätze, setSätze] = useState(Array(3).fill({ Gewicht: "", Wiederholung: "" }));
     const [startTime, setStartTime] = useState(null); // Zeitpunkt, wann der Timer gestartet wurde
-    const [endTime, setEndTime] = useState(null); // Zeitpunkt, wann der Timer gestoppt wurde
-    const [dauer, setDauer] = useState(null);
     const [timerRunning, setTimerRunning] = useState(false); // Status des Timers
     const [timerStarted, setTimerStarted] = useState(false); // Status, ob der Timer gestartet wurde
 
@@ -22,9 +20,7 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
 
     const handleFinish = async (e) => {
         e.preventDefault(); // Verhindere das Standard-Formularverhalten
-        setEndTime(new Date().toISOString()); // Setze den Endzeitpunkt
         setTimerRunning(false); // Stoppe den Timer
-        setDauer(calculateElapsedTime());
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/KalenderAdd`, {
                 PlanID: planID,
@@ -51,29 +47,6 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
         } catch (error) {
             console.error("Fehler beim Senden der Daten:", error);
         }
-    };
-
-    const calculateElapsedTime = () => {
-        if (startTime && endTime) {
-            const start = new Date(startTime);
-            const end = new Date(endTime);
-            const elapsed = end - start;
-            return formatTime(elapsed);
-        }
-        return "00:00:00";
-    };
-
-    const formatTime = (ms) => {
-        const totalSeconds = Math.floor(ms / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        return [
-            String(hours).padStart(2, '0'),
-            String(minutes).padStart(2, '0'),
-            String(seconds).padStart(2, '0')
-        ].join(':');
     };
 
     const handleInputChange = (e, index, type) => {

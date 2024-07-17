@@ -20,7 +20,16 @@ const Signup = () => {
             Password: passwordReg
         }).then((response) => {
             console.log(response);
-        }).catch(err => console.log(err));
+            navigate('/loginForm');
+        }).catch(err => {
+            console.log(err);
+            navigate('/Signup')
+            if (err.response && err.response.data && err.response.data.error) {
+                alert(err.response.data.error); // Alert anzeigen
+            } else {
+                alert("Fehler bei der Registrierung");
+            }
+        });
     };
 
     const handleChange = (e) => {
@@ -39,7 +48,6 @@ const Signup = () => {
         }
         setPasswordsMatch(true);
         register();
-        navigate('/')
     };
 
     const toggleShowPassword = () => {
@@ -49,7 +57,7 @@ const Signup = () => {
     return (
         <React.Fragment>
             <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <div className='wrapper'>
+                <div className='wrapper' style={{height: "550px"}}>
                     <form onSubmit={handleSubmit}>
                         <h1><span style={{ color: "white" }}>Signup</span></h1>
 
@@ -102,7 +110,7 @@ const Signup = () => {
                                         color: '#aaa'
                                     }}
                                 >
-                                    {showPassword ? '🙈' : '👁️'}
+                                    {showPassword ? '🔒' : '👁️'}
                                 </span>
                             </div>
                         </div>
@@ -128,7 +136,7 @@ const Signup = () => {
                                         color: '#aaa'
                                     }}
                                 >
-                                    {showPassword ? '🙈' : '👁️'}
+                                    {showPassword ? '🔒' : '👁️'}
                                 </span>
                             </div>
                         </div>

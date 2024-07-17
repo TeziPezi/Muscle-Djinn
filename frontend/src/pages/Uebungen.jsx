@@ -6,7 +6,6 @@ const Uebungen = () => {
     const [muskelgruppe, setMuskelgruppe] = useState("");
     const [beschreibung, setBeschreibung] = useState("");
     const [auth, setAuth] = useState(false);
-    const [message, setMessage] = useState('');
     const [userID, setUserID] = useState('');
 
     axios.defaults.withCredentials = true;
@@ -20,7 +19,6 @@ const Uebungen = () => {
                     console.log("User ID set:", res.data.userID); // Log userID
                 } else {
                     setAuth(false);
-                    setMessage(res.data.Error);
                 }
             })
             .catch(err => console.log(err));
@@ -34,6 +32,7 @@ const Uebungen = () => {
             beschreibung,
             userID
         }).then((response) => {
+            window.location.reload();
             console.log(response);
         }).catch(err => console.log(err));
     };

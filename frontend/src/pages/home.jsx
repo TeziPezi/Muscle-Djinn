@@ -106,7 +106,7 @@ function Home() {
                     {plan.PlanBeschreibung}
                 </div>
                 <div>
-                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID)}>Anzeige</button>
+                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID)}>Show</button>
                     <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
                         <span className="text">Delete</span>
                         <FontAwesomeIcon icon={faTrashCan} className="icon" />
