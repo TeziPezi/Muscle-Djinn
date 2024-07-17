@@ -20,7 +20,16 @@ const Signup = () => {
             Password: passwordReg
         }).then((response) => {
             console.log(response);
-        }).catch(err => console.log(err));
+            navigate('/loginForm');
+        }).catch(err => {
+            console.log(err);
+            navigate('/Signup')
+            if (err.response && err.response.data && err.response.data.error) {
+                alert(err.response.data.error); // Alert anzeigen
+            } else {
+                alert("Fehler bei der Registrierung");
+            }
+        });
     };
 
     const handleChange = (e) => {
@@ -102,11 +111,11 @@ const Signup = () => {
                                         color: '#aaa'
                                     }}
                                 >
-                                    {showPassword ? '🙈' : '👁️'}
+                                    {showPassword ? '🔒' : '👁️'}
                                 </span>
                             </div>
                         </div>
-                        
+                        🔒
                         <div className='input-box'>
                             <div className='input-icon' style={{ position: 'relative' }}>
                                 <input

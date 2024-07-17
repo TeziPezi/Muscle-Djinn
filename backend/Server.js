@@ -146,29 +146,43 @@ app.post("/register", async (req, res) => {
     try {
         console.log('Received registration data:', { Username, E_mail, Password });
 
-        // Ensure the password is a string
-        const passwordString = String(Password);
-        console.log('Password as string:', passwordString);
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(passwordString, 10);
-        console.log('Hashed password:', hashedPassword);
-
-        const sql = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
-
-        pool.query(sql, [Username, E_mail, hashedPassword], (err, results) => {
+        // Überprüfen, ob Benutzername oder E-Mail bereits existiert
+        const checkSql = 'SELECT * FROM Nutzer WHERE Username = ? OR E_mail = ?';
+        pool.query(checkSql, [Username, E_mail], async (err, results) => {
             if (err) {
-                console.error('Fehler beim Einfügen der Daten:', err);
-                return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                console.error('Fehler beim Überprüfen der Daten:', err);
+                return res.status(500).json({ error: 'Fehler beim Überprüfen der Daten' });
             }
-            console.log('Daten erfolgreich eingefügt:', results);
-            res.status(200).json({ message: 'Registrierung erfolgreich' });
+
+            if (results.length > 0) {
+                return res.status(400).json({ error: 'Benutzername oder E-Mail-Adresse bereits vergeben' });
+            }
+
+            // Sicherstellen, dass das Passwort ein String ist
+            const passwordString = String(Password);
+            console.log('Password as string:', passwordString);
+
+            // Passwort hashen
+            const hashedPassword = await bcrypt.hash(passwordString, 10);
+            console.log('Hashed password:', hashedPassword);
+
+            // Daten in die Datenbank einfügen
+            const insertSql = 'INSERT INTO Nutzer (Username, E_mail, Password) VALUES (?, ?, ?)';
+            pool.query(insertSql, [Username, E_mail, hashedPassword], (err, results) => {
+                if (err) {
+                    console.error('Fehler beim Einfügen der Daten:', err);
+                    return res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
+                }
+                console.log('Daten erfolgreich eingefügt:', results);
+                res.status(200).json({ message: 'Registrierung erfolgreich' });
+            });
         });
     } catch (err) {
         console.error('Fehler beim Hashen des Passworts:', err);
         res.status(500).json({ error: 'Fehler beim Hashen des Passworts' });
     }
 });
+
 
 // Übung erstellen
 app.post("/uebung_erstellen", (req, res) => {
