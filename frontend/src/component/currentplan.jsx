@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons'; // Importiere das Check-Icon
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../styles.css';
 import axios from 'axios';
 
-const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) => {
+const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID, planBezeichnung }) => {
     const [selectedUbungID, setSelectedUbungID] = useState(null);
     const [selectedUbungBezeichnung, setSelectedUbungBezeichnung] = useState("");
     const [sätze, setSätze] = useState(Array(3).fill({ Gewicht: "", Wiederholung: "" }));
-    const [startTime, setStartTime] = useState(null); // Zeitpunkt, wann der Timer gestartet wurde
-    const [timerRunning, setTimerRunning] = useState(false); // Status des Timers
-    const [timerStarted, setTimerStarted] = useState(false); // Status, ob der Timer gestartet wurde
+    const [startTime, setStartTime] = useState(null); 
+    const [timerRunning, setTimerRunning] = useState(false);
+    const [timerStarted, setTimerStarted] = useState(false);
 
     const handleStartTimer = () => {
-        setStartTime(new Date().toISOString()); // Setze den Startzeitpunkt
-        setTimerRunning(true); // Starte den Timer
-        setTimerStarted(true); // Setze den Timer-Start-Status
+        setStartTime(new Date().toISOString());
+        setTimerRunning(true);
+        setTimerStarted(true);
     };
 
     const handleFinish = async (e) => {
-        e.preventDefault(); // Verhindere das Standard-Formularverhalten
-        setTimerRunning(false); // Stoppe den Timer
+        e.preventDefault();
+        setTimerRunning(false);
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/KalenderAdd`, {
                 PlanID: planID,
@@ -35,7 +36,7 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
 
     const handleSubmit = async (e, index) => {
         e.preventDefault();
-        const set = sätze[index]; // Hole den Satz, der dem aktuellen Index entspricht
+        const set = sätze[index];
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/VerlaufAdd`, {
                 PlanID: planID,
@@ -62,7 +63,7 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
     };
 
     const Navigation = () => (
-        <div style={{ display: "flex", overflowX: "auto", whiteSpace: "nowrap" }}>
+        <div style={{ display: "flex", overflowX: "auto", whiteSpace: "nowrap", justifyContent: 'center'}}>
             {currentplan.map((item, index) => (
                 <div key={index}>
                     <button
@@ -121,7 +122,12 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
 
     return (
         <div className={`popup ${show ? 'show' : ''}`}>
-            <div style={{ backgroundColor: "#272727", maxWidth: 400, width: "100%", borderRadius: 8, height: 400 }}>
+            <div style={{ backgroundColor: "#272727", maxWidth: 400, width: "100%", borderRadius: 8, height: 450 }}>
+                <div className="popup-head">
+                    <div style={{width: "40px", marginLeft: 5}}></div>
+                    <div><h2>{planBezeichnung}</h2></div>
+                    <button style={{width: "40px", marginTop: 5, marginBottom: 5, marginRight: 5 }} type="button" className="Close-Button" onClick={ !timerRunning && handleClose || timerRunning && handleFinish }><FontAwesomeIcon icon={faXmark} /></button>
+                </div>
                 <div style={{ height: "75px" }}>
                     <Navigation />
                 </div>
@@ -136,7 +142,6 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID }) =>
                     <div style={{ background: '#fff', borderRadius: '10px', textAlign: 'center', color: 'black', display: "flex", alignItems: "center", justifyContent: "center", marginRight: "20px" }}>
                     </div>
                     {!timerRunning && <button style={{ marginRight: "25px" }} type="button" className="Button" onClick={handleStartTimer}>Start</button>}
-                    {!timerRunning && <button type="button" className="Button" onClick={handleClose}>Close</button>}
                     {timerRunning && <button type="button" className="Button" onClick={handleFinish}>Finish</button>}
                 </footer>
             </div>

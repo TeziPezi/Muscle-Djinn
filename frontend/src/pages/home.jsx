@@ -13,6 +13,7 @@ function Home() {
     const [auth, setAuth] = useState(false); // hier false
     const [userID, setUserID] = useState('');
     const [plans, setPlans] = useState([]);
+    const [CurrentBezeichnung, setCurrentBezeichnung] = useState('');
     const [Currentplan, setcurrentplan] = useState([]);
     const [PlanID, setPlanID] = useState('');
     const [allExercises, setAllExercises] = useState([]);
@@ -54,8 +55,9 @@ function Home() {
         setShowImportPlanPopup(true); // Öffne das Import Plan Popup
     };
 
-    const currentPlan = (planID) => {
+    const currentPlan = (planID, planBezeichnung) => {
         setShowCurrentPlanPopup(true);
+        setCurrentBezeichnung(planBezeichnung);
         setPlanID(planID);
         setcurrentplan(plans.filter(item => item.PlanID === planID));
     };
@@ -106,7 +108,7 @@ function Home() {
                     {plan.PlanBeschreibung}
                 </div>
                 <div>
-                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID)}>Show</button>
+                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID, plan.PlanBezeichnung)}>Show</button>
                     <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
                         <span className="text">Delete</span>
                         <FontAwesomeIcon icon={faTrashCan} className="icon" />
@@ -168,6 +170,7 @@ function Home() {
                     currentplan={Currentplan}
                     userID={userID}
                     planID={PlanID}
+                    planBezeichnung={CurrentBezeichnung}
                 />
                 <br />
                 <br />

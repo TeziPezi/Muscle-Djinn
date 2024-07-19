@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../../styles.css';
 
-function EMail() {
+const EMail = ({ show, handleNext, handleClose }) => {
     const [email, setEmail] = useState("");
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -13,12 +12,11 @@ function EMail() {
         })
         .then((res) => {
             if (res.data.status) {
-                navigate('/CodetoPassword');
+                handleNext();
             } else {
-                alert(res.data.message)
+                alert(res.data.message);
             }
         })
- 
         .catch(err => console.log(err));
     };
 
@@ -27,40 +25,39 @@ function EMail() {
         if (name === 'email') setEmail(value);
     };
 
-    return <React.Fragment>
-        <div style={{ height: "425px", width: "400px", border: "2px solid white", margin: "0 auto", marginTop: "200px", textAlign: "center", backgroundColor: "#333"}}>
-            <br />
-            <span style={{ color: "white" }}><h3>Password zurücksetzen</h3></span>
-            <span style={{ color: "white" }}>Bitte geben Sie Ihre E-Mail-Adresse ein,</span><br />
-            <span style={{ color: "white" }}>um einen Zurücksetzungscode zu erhalten.</span>
-            <div style={{ margin: "20px" }}>
-                <form onSubmit={handleSubmit}>
-                    <div className='input-box'>
-                        <div className='input-icon'>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder='Enter E-Mail'
-                                className='form-control'
-                                value={email}
-                                onChange={handleChange}
-                                required
-                            />
+    return (
+        <div className={`popup ${show ? 'show' : ''}`}>
+            <div className='wrapper' style={{ backgroundColor: "#272727", maxWidth: 450, width: "100%", height: 500 }}>
+                <span style={{ color: "white" }}><h3>Reset Password</h3></span>
+                <span style={{ color: "white" }}>Please enter your email address</span><br />
+                <span style={{ color: "white" }}>to receive a password reset code.</span>
+                <div style={{ margin: "20px" }}>
+                    <form onSubmit={handleSubmit}>
+                        <div className='input-box'>
+                            <div className='input-icon'>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder='Enter Email'
+                                    className='form-control'
+                                    value={email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <br/>
-                    <span style={{ color: "white" }}>Falls ein Konto mit dieser E-Mail existiert,</span><br />
-                    <span style={{ color: "white" }}>Bekommen sie eine Code per E-Mail.</span><br />
-                    <br />
-                    <button className="Button" type="submit">Suchen</button><br />
-                    <div className='register-link'>
+                        <span style={{ color: "white" }}>If an account with this email exists,</span><br />
+                        <span style={{ color: "white" }}>you will receive a code via email.</span><br />
                         <br />
-                        <p><a href="/loginForm">Zurück zum Login</a></p>
-                    </div>
+                        <button className="Button" type="submit">Search</button><br />
+                        <div className='register-link'>
+                            <p><button type="button" onClick={handleClose} style={{ background: 'none', border: 'none', padding: 0, textDecoration: 'underline', cursor: 'pointer', width: "150px", height: "20px", boxShadow: "0 0", color: 'white'}}>back to Login</button></p>
+                        </div>
                     </form>
                 </div>
             </div>
-        </React.Fragment>
-}
+        </div>
+    );
+};
 
 export default EMail;

@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import '../styles.css';
 import { FaUser, FaLock } from "react-icons/fa";
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import EMail from '../component/E-Mail/email';
+import PasswordReset from '../component/E-Mail/password';
 
 function Login() {
+    const [showEmailToCode, setShowEmailToCode] = useState(false);
+    const [showCodeToPw, setShowCodeToPw] = useState(false);
+
     const [loginValues, setValues] = useState({
         loginUsername: '',
         loginPassword: ''
-    })
+    });
 
     const navigate = useNavigate();
 
@@ -22,22 +26,37 @@ function Login() {
             loginUsername: loginValues.loginUsername,
             loginPassword: loginValues.loginPassword
         })
-
             .then(res => {
                 if (res.data.loginValue) {
-                    navigate('/settings')
-
+                    navigate('/settings');
                 } else {
-                    alert(res.data.message)
+                    alert(res.data.message);
                 }
             })
-
             .catch(err => console.log(err));
+    };
+
+    const emailCode = () => {
+        setShowEmailToCode(true); 
+    };
+
+    const CloseEmailCode = () => {
+        setShowEmailToCode(false);
+    };
+
+    const EmailSwitchCode = () => {
+        setShowEmailToCode(false);
+        setShowCodeToPw(true);
+
     }
+
+    const closeCodePW = () => {
+        setShowCodeToPw(false);
+    };
 
     return (
         <div className='headPosition'>
-            <div className='container' style={{display: 'flex', justifyContent: 'space-around'}} >
+            <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }} >
                 <div className='wrapper'>
                     <form onSubmit={handleSubmit}>
                         <h1><span style={{ color: "white" }}>Login</span></h1>
@@ -53,21 +72,30 @@ function Login() {
                         </div>
                         <div className="remember-forgot">
                             <label><input type="checkbox" />Remember me</label>
-                            <a href="/EmailtoCode"> Forgot passwort?</a>
+                            <button type="button" onClick={emailCode} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: "150px", height: "20px", boxShadow: "0 0", color: 'white'}}>Forgot password?</button>
                         </div>
 
                         <button className="Button" type='submit'>Login</button>
 
                         <div className='register-link'>
                             <p>Don't have an account? <a href="/Signup">Register</a></p>
-
                         </div>
-                        {/*this.state.message && <p>{this.state.message}</p>*/}
                     </form>
                 </div>
+
+                <EMail 
+                    show={showEmailToCode}
+                    handleNext={EmailSwitchCode}
+                    handleClose={CloseEmailCode}
+                />
+
+                <PasswordReset 
+                    show={showCodeToPw}
+                    handleClose={closeCodePW}
+                />
             </div>
-        </div>
-    )
+        </div>     
+    );
 }
 
-export default Login
+export default Login;
