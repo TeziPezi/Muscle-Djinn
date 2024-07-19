@@ -63,11 +63,11 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID, plan
     };
 
     const Navigation = () => (
-        <div style={{ display: "flex", overflowX: "auto", whiteSpace: "nowrap", justifyContent: 'center'}}>
+        <div style={{ display: "flex", overflowX: "auto", whiteSpace: "nowrap"}}>
             {currentplan.map((item, index) => (
                 <div key={index}>
                     <button
-                        style={{ fontSize: "16px", background: "transparent", color: "white", width: "150px" }}
+                        style={{ fontSize: "16px", background: "transparent", color: "white", maxWidth: "500px", width: "100%" }}
                         onClick={() => { setSelectedUbungID(item.UbungID); setSelectedUbungBezeichnung(item.UbungBezeichnung); }}
                     >
                         {item.UbungBezeichnung}
@@ -126,7 +126,7 @@ const CurrentPlanPopup = ({ show, handleClose, currentplan, userID, planID, plan
                 <div className="popup-head">
                     <div style={{width: "40px", marginLeft: 5}}></div>
                     <div><h2>{planBezeichnung}</h2></div>
-                    <button style={{width: "40px", marginTop: 5, marginBottom: 5, marginRight: 5 }} type="button" className="Close-Button" onClick={ !timerRunning && handleClose || timerRunning && handleFinish }><FontAwesomeIcon icon={faXmark} /></button>
+                    <button style={{width: "40px", marginTop: 5, marginBottom: 5, marginRight: 5 }} type="button" className="Close-Button" onClick={ (!timerRunning && handleClose) || (timerRunning && handleFinish) }><FontAwesomeIcon icon={faXmark} /></button>
                 </div>
                 <div style={{ height: "75px" }}>
                     <Navigation />
