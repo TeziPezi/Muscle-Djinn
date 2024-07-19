@@ -5,6 +5,7 @@ const Uebungen = () => {
     const [bezeichnung, setBezeichnung] = useState("");
     const [muskelgruppe, setMuskelgruppe] = useState("");
     const [beschreibung, setBeschreibung] = useState("");
+    const [Weight, setWeight] = useState("");
     const [auth, setAuth] = useState(false);
     const [userID, setUserID] = useState('');
 
@@ -39,7 +40,7 @@ const Uebungen = () => {
 
     const cacheUebung = () => {
         const cachedExercises = JSON.parse(localStorage.getItem('cachedExercises')) || [];
-        const newExercise = { bezeichnung, muskelgruppe, beschreibung };
+        const newExercise = { bezeichnung, muskelgruppe, beschreibung ,Weight};
         cachedExercises.push(newExercise);
         localStorage.setItem('cachedExercises', JSON.stringify(cachedExercises));
         console.log("Exercise cached:", newExercise);//t
@@ -50,6 +51,8 @@ const Uebungen = () => {
         if (name === 'bezeichnung') setBezeichnung(value);
         if (name === 'muskelgruppe') setMuskelgruppe(value);
         if (name === 'beschreibung') setBeschreibung(value);
+        if (name == 'Weight') setWeight(value);
+        
     };
 
     const handleSubmit = async (e) => {
