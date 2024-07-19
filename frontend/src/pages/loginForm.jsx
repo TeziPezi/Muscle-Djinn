@@ -71,7 +71,6 @@ function Login() {
                             <FaLock className='icon2' />
                         </div>
                         <div className="remember-forgot">
-                            <label><input type="checkbox" />Remember me</label>
                             <button type="button" onClick={emailCode} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: "150px", height: "20px", boxShadow: "0 0", color: 'white'}}>Forgot password?</button>
                         </div>
 

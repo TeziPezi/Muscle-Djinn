@@ -57,10 +57,6 @@ function Settings() {
         navigate('/Signup');
     };
 
-    const handleGuestClick = () => {
-        setShowNotification(true);
-    };
-
     return (
                 auth ? (
                     <div className='headPosition'>
@@ -89,13 +85,13 @@ function Settings() {
                 ) : (
                     <div className="headPosition">
                         <div className="container">
-                            {message}
+                            <h2>{message}</h2>
+                            <h6>As a guest, data will only be stored temporarily,<br /> and you will have limited functionality.</h6>
                             <br /><br />
                             <button type="button" className="Button" onClick={handleLoginClick}>Login</button>
                             <br /><br />
                             <button type="button" className="Button" onClick={handleRegisterClick}>Register</button>
                             <br /><br />
-                            <button type="button" className="Button" onClick={handleGuestClick}>Als Gast fortfahren</button>
                         </div>
                     </div>
                 )

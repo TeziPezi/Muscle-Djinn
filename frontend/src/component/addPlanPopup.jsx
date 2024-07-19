@@ -39,13 +39,12 @@ const AddPlanPopup = ({ show, handleClose, allExercises, userID }) => {
                         ubungID: exercise.exerciseID,
                         userID: userID
                     })
+                    handleClose();
                 }
             }))
-            handleClose();
         } catch (error) {
             console.error("Error creating plan:", error);
         }
-
     }
 
     return (
