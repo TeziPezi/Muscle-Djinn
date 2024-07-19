@@ -51,7 +51,7 @@ const Uebungen = () => {
         if (name === 'bezeichnung') setBezeichnung(value);
         if (name === 'muskelgruppe') setMuskelgruppe(value);
         if (name === 'beschreibung') setBeschreibung(value);
-        if (name == 'Weight') setWeight(value);
+        if (name === 'Weight') setWeight(value);
         
     };
 

@@ -70,38 +70,72 @@ function Training() {
     };
 
     return (
-        <div className='headPosition'>
-            <div className='container'>
-                <div className='next'>
-                    <button onClick={() => setVisible(true)} className="icon-button">
-                        <span className="text">Add</span>
-                        <FontAwesomeIcon icon={faPlus} className="icon" />
-                    </button>
-                </div>
-                <div className="table-con">
-                    <h1>My Exercises</h1>
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th style={{ width: "10%" }}>Del</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Ubung.map((ubung) => (
-                                <tr key={ubung.UbungID}>
-                                    <td>{ubung.bezeichnung}</td>
-                                    <td>
-                                        <button style={{ width: "38px" }} onClick={() => deleteUbung(ubung.UbungID)} className="icon-button">
-                                            <FontAwesomeIcon icon={faTrashCan} />
-                                        </button>
-                                    </td>
+
+
+        auth ? (
+
+            <div className='headPosition'>
+                <div className='container'>
+                    <div className='next'>
+                        <button onClick={() => setVisible(true)} className="icon-button">
+                            <span className="text">Add</span>
+                            <FontAwesomeIcon icon={faPlus} className="icon" />
+                        </button>
+                    </div>
+
+
+                    <div className="table-con">
+                        <h1>My Exercises</h1>
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th style={{ width: "10%" }}>Del</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                   
-                   
+                            </thead>
+                            <tbody>
+                                {Ubung.map((ubung) => (
+                                    <tr key={ubung.UbungID}>
+                                        <td>{ubung.bezeichnung}</td>
+                                        <td>
+                                            <button style={{ width: "38px" }} onClick={() => deleteUbung(ubung.UbungID)} className="icon-button">
+                                                <FontAwesomeIcon icon={faTrashCan} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <br />
+                    <Modal
+                        isOpen={visible}
+                        onRequestClose={() => setVisible(false)}
+                        className="modal-content"
+                        overlayClassName="modal-overlay"
+                    >
+                        <Uebungen />
+                        <button onClick={() => setVisible(false)} className="close-button"></button>
+                    </Modal>
+                    <br /><br /><br /><br />
+                </div>
+            </div>
+
+
+
+
+
+        ) : (
+            <div className='headPosition'>
+                <div className='container'>
+                <div className='next'>
+                        <button onClick={() => setVisible(true)} className="icon-button">
+                            <span className="text">Add</span>
+                            <FontAwesomeIcon icon={faPlus} className="icon" />
+                        </button>
+                    </div>
+
                     <h1>Gast Exercises</h1>
                     {cachedExercises.length > 0 ? (
                         <table className="table">
@@ -110,7 +144,7 @@ function Training() {
                                     <th>Bezeichnung</th>
                                     <th>Muskelgruppe</th>
                                     <th>Beschreibung</th>
-                                    <th>Weight</th>
+                                    <th>Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,21 +167,34 @@ function Training() {
                     ) : (
                         <p>No cached exercises available.</p>
                     )}
+
+                    <br />
+                    <Modal
+                        isOpen={visible}
+                        onRequestClose={() => setVisible(false)}
+                        className="modal-content"
+                        overlayClassName="modal-overlay"
+                    >
+                        <Uebungen />
+                        <button onClick={() => setVisible(false)} className="close-button"></button>
+                    </Modal>
+                    <br /><br /><br /><br />
+
                 </div>
-                <br />
-                <Modal
-                    isOpen={visible}
-                    onRequestClose={() => setVisible(false)}
-                    className="modal-content"
-                    overlayClassName="modal-overlay"
-                >
-                    <Uebungen />
-                    <button onClick={() => setVisible(false)} className="close-button"></button>
-                </Modal>
-                <br /><br /><br /><br />
             </div>
-        </div>
-    );
+
+
+
+
+
+
+        ));
+    
 }
+
+
+
+
+
 
 export default Training;

@@ -427,8 +427,8 @@ button:hover {
 }
 
 .close-button {
-  position: fixed; /* Positioniert den Button relativ zum Modal */
-  top: 140px; /* Abstand von oben */
+  position: fixed ; /* Positioniert den Button relativ zum Modal */
+  top: 100px; /* Abstand von oben */
   right: 530px; /* Abstand von rechts */
   background-color: #444; /* Dunkelgrauer Hintergrund */
   color: gray; /* Graue Schriftfarbe */
