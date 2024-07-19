@@ -469,15 +469,15 @@ app.post('/EMailCode', (req, res) => {
             }
 
             pool.query('INSERT INTO Code (Code, UserID, Gültig) VALUES (?, ?, NOW() + INTERVAL 10 MINUTE)', [code, id]);
-            const text = 'um Ihr Passwort für MuscleDjinn zurückzusetzen, verwenden Sie bitte folgenden Code: ' + code;
+            const text = 'To reset your password for MuscleDjinn, please use the following code: ' + code;
 
             const mailOptions = {
                 from: "no-reply@muscledjinn.de",
                 to: EMail,
-                subject: 'Password zurücksetzten',
-                text: 'Hallo '+user.Username+',\n\n'+text+'\n\nDer Code ist 10min gültig\n\nViele Grüße,\nDein Team\nMuscleDjinn',
-                html: '<p>Hallo '+user.Username+',</p><p>'+text+'</p><p>Der Code ist 10min gültig</p><p>Viele Grüße,<br>Dein Team<br>MuscleDjinn</p>'
-            };
+                subject: 'Password Reset',
+                text: 'Hello ' + user.Username + ',\n\n' + text + '\n\nThe code is valid for 10 minutes\n\nBest regards,\nYour Team\nMuscleDjinn',
+                html: '<p>Hello ' + user.Username + ',</p><p>' + text + '</p><p>The code is valid for 10 minutes</p><p>Best regards,<br>Your Team<br>MuscleDjinn</p>'
+            };            
             
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
