@@ -136,7 +136,7 @@ function Training() {
                         </button>
                     </div>
 
-                    <h1>Gast Exercises</h1>
+                    <h1>Guest Exercises</h1>
                     {cachedExercises.length > 0 ? (
                         <table className="table">
                             <thead>

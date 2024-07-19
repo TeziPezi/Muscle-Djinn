@@ -110,8 +110,10 @@ function Home() {
                <div> 
                     <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID, plan.PlanBezeichnung)}>Show</button> 
                 
-                </div>
+                </div >
+                
                     {plan.PlanBeschreibung}
+                
                 <div>
                     <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
                         <span className="text">Delete</span>
