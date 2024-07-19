@@ -104,10 +104,14 @@ function Home() {
                         <Exercise key={index} exercise={exercise} />
                     ))}
                 </ul>
+                
                 <div className='Plan-Description'>
-                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID, plan.PlanBezeichnung)}>Show</button>
-                    {plan.PlanBeschreibung}
                 </div>
+               <div> 
+                    <button type="button" className='Button' onClick={() => currentPlan(plan.PlanID, plan.PlanBezeichnung)}>Show</button> 
+                
+                </div>
+                    {plan.PlanBeschreibung}
                 <div>
                     <button className='icon-button' onClick={() => handleclickDelete(plan.PlanID)}>
                         <span className="text">Delete</span>
